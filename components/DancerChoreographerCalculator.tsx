@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { dancersSalaryData } from '@/lib/dancersSalary';
 import { choreographyProjectSalaryData } from '@/lib/choreographyProjectSalary';
-import '../app/globals.css';
+import '../app/styles/base.css';
 import '../app/styles/calculator-common.css';
 
 export function DancerChoreographerCalculator() {
