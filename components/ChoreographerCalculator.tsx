@@ -8,9 +8,7 @@ import '../app/styles/calculator-common.css';
 
 export function ChoreographerCalculator() {
   const [seniority, setSeniority] = useState('');
-  const [workType, setWorkType] = useState<
-    'project' | 'theater' | 'selfEmployed' | ''
-  >('');
+  const [workType, setWorkType] = useState<'project' | 'theater' | 'selfEmployed' | ''>('');
   const [productionLength, setProductionLength] = useState('');
   const [rehearsalMonths, setRehearsalMonths] = useState('');
   const [projectHours, setProjectHours] = useState('');
@@ -123,9 +121,7 @@ export function ChoreographerCalculator() {
           setSalary({
             monthlyRate: selectedData['Innstudering månedssats'],
             hourlyRate: Math.round(hourlyRate).toString(),
-            selfEmployedHourlyRate: Math.round(
-              selfEmployedHourlyRate
-            ).toString(),
+            selfEmployedHourlyRate: Math.round(selfEmployedHourlyRate).toString(),
             totalHourlyFee: totalHourlyFee
               ? Math.round(totalHourlyFee).toString()
               : undefined,
@@ -142,68 +138,63 @@ export function ChoreographerCalculator() {
   }, [seniority, workType, productionLength, rehearsalMonths, projectHours]);
 
   return (
-    <form className='form calculator-content'>
-      <div className='card'>
-        <div className='card-header'>
-          <h2 className='card-title'>Koreograf lønnsberegning</h2>
+    <form className="form calculator-content">
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">Koreograf lønnsberegning</h2>
         </div>
-        <div className='card-content'>
-          <div className='input-group'>
-            <label htmlFor='seniority' className='label'>
+        <div className="card-content">
+          <div className="input-group">
+            <label htmlFor="seniority" className="label">
               Ansiennitet
             </label>
             <select
-              id='seniority'
-              className='styled-select'
+              id="seniority"
+              className="styled-select"
               value={seniority}
               onChange={(e) => setSeniority(e.target.value)}
             >
-              <option value=''>Velg ansiennitet</option>
+              <option value="">Velg ansiennitet</option>
               {choreographyProjectSalaryData.map((item) => (
-                <option
-                  key={item.Ansiennitet}
-                  value={item.Ansiennitet.toString()}
-                >
+                <option key={item.Ansiennitet} value={item.Ansiennitet.toString()}>
                   {item.Ansiennitet}
                 </option>
               ))}
             </select>
           </div>
 
-          <div className='input-group'>
-            <label htmlFor='workType' className='label'>
+          <div className="input-group">
+            <label htmlFor="workType" className="label">
               Arbeidstype
             </label>
             <select
-              id='workType'
-              className='styled-select'
+              id="workType"
+              className="styled-select"
               value={workType}
               onChange={(e) => {
-                setWorkType(
-                  e.target.value as 'project' | 'theater' | 'selfEmployed'
-                );
+                setWorkType(e.target.value as 'project' | 'theater' | 'selfEmployed');
                 setProductionLength('');
                 setRehearsalMonths('');
                 setProjectHours('');
               }}
             >
-              <option value=''>Velg arbeidstype</option>
-              <option value='project'>Enkeltstående produksjon</option>
-              <option value='theater'>For teater eller musikal</option>
-              <option value='selfEmployed'>Selvstendig næringsdrivende</option>
+              <option value="">Velg arbeidstype</option>
+              <option value="project">Enkeltstående produksjon</option>
+              <option value="theater">For teater eller musikal</option>
+              <option value="selfEmployed">Selvstendig næringsdrivende</option>
             </select>
           </div>
 
           {workType === 'project' && (
             <>
-              <div className='input-group'>
-                <label htmlFor='productionLength' className='label'>
+              <div className="input-group">
+                <label htmlFor="productionLength" className="label">
                   Produksjonslengde (minutter)
                 </label>
                 <input
-                  type='number'
-                  id='productionLength'
-                  className='input'
+                  type="number"
+                  id="productionLength"
+                  className="input"
                   value={productionLength}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -211,18 +202,18 @@ export function ChoreographerCalculator() {
                       setProductionLength(value);
                     }
                   }}
-                  min='1'
-                  placeholder='Antall minutter'
+                  min="1"
+                  placeholder="Antall minutter"
                 />
               </div>
-              <div className='input-group'>
-                <label htmlFor='rehearsalMonths' className='label'>
+              <div className="input-group">
+                <label htmlFor="rehearsalMonths" className="label">
                   Innstuderingsmåneder
                 </label>
                 <input
-                  type='number'
-                  id='rehearsalMonths'
-                  className='input'
+                  type="number"
+                  id="rehearsalMonths"
+                  className="input"
                   value={rehearsalMonths}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -230,22 +221,22 @@ export function ChoreographerCalculator() {
                       setRehearsalMonths(value);
                     }
                   }}
-                  min='1'
-                  placeholder='Antall måneder'
+                  min="1"
+                  placeholder="Antall måneder"
                 />
               </div>
             </>
           )}
 
           {workType === 'selfEmployed' && (
-            <div className='input-group'>
-              <label htmlFor='projectHours' className='label'>
+            <div className="input-group">
+              <label htmlFor="projectHours" className="label">
                 Antall timer
               </label>
               <input
-                type='number'
-                id='projectHours'
-                className='input'
+                type="number"
+                id="projectHours"
+                className="input"
                 value={projectHours}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -253,257 +244,172 @@ export function ChoreographerCalculator() {
                     setProjectHours(value);
                   }
                 }}
-                min='1'
-                placeholder='Antall timer'
+                min="1"
+                placeholder="Antall timer"
               />
             </div>
           )}
         </div>
       </div>
 
-      <div className='card result-card'>
-        <div className='card-header'>
-          <h2 className='card-title'>Beregnet lønn</h2>
+      <div className="card result-card">
+        <div className="card-header">
+          <h2 className="card-title">Beregnet lønn</h2>
         </div>
-        <div className='separator'></div>
-        <div className='card-content result-grid'>
+        <div className="separator"></div>
+        <div className="card-content result-grid">
           {salary ? (
             <div>
               {workType === 'project' ? (
                 <>
                   {salary.totalSalary ? (
                     <>
-                      <div className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Lønn for koreografi:
-                        </h3>
-                        <p className='result-value'>
-                          {salary.productionSalary} NOK
-                        </p>
-                        <p className='result-explanation'>
-                          (Minuttsats {salary.minuteRate} NOK x{' '}
-                          {productionLength} minutter)
+                      <div className="result-section">
+                        <h3 className="result-subtitle">Lønn for koreografi:</h3>
+                        <p className="result-value">{salary.productionSalary} NOK</p>
+                        <p className="result-explanation">
+                          (Minuttsats {salary.minuteRate} NOK x {productionLength} minutter)
                         </p>
                       </div>
-                      <div className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Lønn for innstudering:
-                        </h3>
-                        <p className='result-value'>
-                          {salary.rehearsalSalary} NOK
-                        </p>
-                        <p className='result-explanation'>
-                          (Månedssats {salary.monthlyRate} NOK x{' '}
-                          {rehearsalMonths} måneder)
+                      <div className="result-section">
+                        <h3 className="result-subtitle">Lønn for innstudering:</h3>
+                        <p className="result-value">{salary.rehearsalSalary} NOK</p>
+                        <p className="result-explanation">
+                          (Månedssats {salary.monthlyRate} NOK x {rehearsalMonths} måneder)
                         </p>
                       </div>
-                      <div className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Grunnlønn for produksjonen:
-                        </h3>
-                        <p className='result-value'>
-                          {Number(salary.baseSalary).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
+                      <div className="result-section">
+                        <h3 className="result-subtitle">Grunnlønn for produksjonen:</h3>
+                        <p className="result-value">
+                          {Number(salary.baseSalary).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK
                         </p>
-                        <p className='result-explanation'>
-                          (Lønn for koreografi + Lønn for innstudering)
-                        </p>
+                        <p className="result-explanation">(Lønn for koreografi + Lønn for innstudering)</p>
                       </div>
-                      <div className='separator'></div>
+                      <div className="separator"></div>
                       {salary.socialCosts && (
-                        <div className='result-section social-costs'>
-                          <h3 className='result-subtitle'>
-                            Sosiale kostnader:
-                          </h3>
-                          <p className='result-value'>
-                            {Number(salary.socialCosts.total).toLocaleString(
-                              'no-NO',
-                              { maximumFractionDigits: 0 }
-                            )}{' '}
-                            NOK
+                        <div className="result-section social-costs">
+                          <h3 className="result-subtitle">Sosiale kostnader:</h3>
+                          <p className="result-value">
+                            {Number(salary.socialCosts.total).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK
                           </p>
-                          <ul className='social-costs-list'>
-                            <li className='social-costs-item'>
+                          <ul className="social-costs-list">
+                            <li className="social-costs-item">
                               Feriepenger (10,2%):
                               <br />
-                              {Number(salary.baseSalary).toLocaleString(
-                                'no-NO',
-                                { maximumFractionDigits: 0 }
-                              )}{' '}
-                              NOK x 0,102 ={' '}
-                              {Number(
-                                salary.socialCosts.holidayPay
-                              ).toLocaleString('no-NO', {
+                              {Number(salary.baseSalary).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK x
+                              0,102 ={' '}
+                              {Number(salary.socialCosts.holidayPay).toLocaleString('no-NO', {
                                 maximumFractionDigits: 0,
                               })}{' '}
                               NOK
                             </li>
-                            <li className='social-costs-item'>
+                            <li className="social-costs-item">
                               Arbeidsgiveravgift (14,1%):
                               <br />
-                              {Number(salary.baseSalary).toLocaleString(
-                                'no-NO',
-                                { maximumFractionDigits: 0 }
-                              )}{' '}
-                              NOK x 0,141 ={' '}
-                              {Number(
-                                salary.socialCosts.employerTax
-                              ).toLocaleString('no-NO', {
+                              {Number(salary.baseSalary).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK x
+                              0,141 ={' '}
+                              {Number(salary.socialCosts.employerTax).toLocaleString('no-NO', {
                                 maximumFractionDigits: 0,
                               })}{' '}
                               NOK
                             </li>
-                            <li className='social-costs-item'>
+                            <li className="social-costs-item">
                               Pensjon (2%):
                               <br />
-                              {Number(salary.baseSalary).toLocaleString(
-                                'no-NO',
-                                { maximumFractionDigits: 0 }
-                              )}{' '}
-                              NOK x 0,02 ={' '}
-                              {Number(
-                                salary.socialCosts.pension
-                              ).toLocaleString('no-NO', {
-                                maximumFractionDigits: 0,
-                              })}{' '}
+                              {Number(salary.baseSalary).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK x
+                              0,02 ={' '}
+                              {Number(salary.socialCosts.pension).toLocaleString('no-NO', { maximumFractionDigits: 0 })}{' '}
                               NOK
                             </li>
                           </ul>
-                          <p className='result-explanation'>
-                            (Beregnet basert på grunnlønn for produksjonen)
-                          </p>
+                          <p className="result-explanation">(Beregnet basert på grunnlønn for produksjonen)</p>
                         </div>
                       )}
-                      <div className='separator'></div>
-                      <div className='result-section total-salary'>
-                        <h3 className='result-subtitle'>
-                          Total lønn for produksjonen:
-                        </h3>
-                        <p className='total-salary-value'>
-                          {Number(salary.totalSalary).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
+                      <div className="separator"></div>
+                      <div className="result-section total-salary">
+                        <h3 className="result-subtitle">Total lønn for produksjonen:</h3>
+                        <p className="total-salary-value">
+                          {Number(salary.totalSalary).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK
                         </p>
-                        <p className='result-explanation'>
-                          (Inkluderer grunnlønn for produksjonen, samt alle
-                          sosiale kostnader)
+                        <p className="result-explanation">
+                          (Inkluderer grunnlønn for produksjonen, samt alle sosiale kostnader)
                         </p>
                       </div>
                     </>
                   ) : (
-                    <p className='result-explanation'>
-                      Vennligst fyll ut produksjonslengde og
-                      innstuderingsmåneder for å se beregnet lønn.
+                    <p className="result-explanation">
+                      Vennligst fyll ut produksjonslengde og innstuderingsmåneder for å se beregnet lønn.
                     </p>
                   )}
                 </>
               ) : workType === 'theater' && salary.annualSalary ? (
-                <div className='result-section'>
-                  <h3 className='result-subtitle'>Årslønn:</h3>
-                  <p className='result-value'>{salary.annualSalary} NOK</p>
+                <div className="result-section">
+                  <h3 className="result-subtitle">Årslønn:</h3>
+                  <p className="result-value">{salary.annualSalary} NOK</p>
                 </div>
-              ) : workType === 'selfEmployed' &&
-                projectHours &&
-                salary.selfEmployedHourlyRate ? (
+              ) : workType === 'selfEmployed' && projectHours && salary.selfEmployedHourlyRate ? (
                 <>
-                  <section className='result-section'>
-                    <h3 className='result-subtitle'>
-                      Timesats basert på årslønn:
-                    </h3>
-                    <p className='result-value'>
-                      {Number(salary.hourlyRate).toLocaleString('no-NO', {
-                        maximumFractionDigits: 0,
-                      })}{' '}
-                      NOK
+                  <section className="result-section">
+                    <h3 className="result-subtitle">Timesats basert på årslønn:</h3>
+                    <p className="result-value">
+                      {Number(salary.hourlyRate).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK
                     </p>
-                    <p className='result-explanation'>
-                      (Årslønn / 1750 arbeidstimer)
-                    </p>
-                    <p className='result-explanation mt-2'>
+                    <p className="result-explanation">(Årslønn / 1750 arbeidstimer)</p>
+                    <p className="result-explanation mt-2">
                       <strong>Grunnlag for beregning:</strong> Estimert årslønn:{' '}
-                      {(
-                        Number(salary.monthlyRate.replace(/\s/g, '')) * 12
-                      ).toLocaleString('no-NO', {
+                      {(Number(salary.monthlyRate.replace(/\s/g, '')) * 12).toLocaleString('no-NO', {
                         maximumFractionDigits: 0,
                       })}{' '}
                       NOK (Månedssats {salary.monthlyRate} NOK × 12)
                     </p>
 
-                    <div className='separator'></div>
+                    <div className="separator"></div>
 
-                    <h3 className='result-subtitle'>
-                      Anbefalt timesats med påslag (36,8%):
-                    </h3>
-                    <p className='result-value'>
-                      {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                        'no-NO',
-                        { maximumFractionDigits: 0 }
-                      )}{' '}
-                      NOK
+                    <h3 className="result-subtitle">Anbefalt timesats med påslag (36,8%):</h3>
+                    <p className="result-value">
+                      {Number(salary.selfEmployedHourlyRate).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK
                     </p>
-                    <p className='result-explanation'>
-                      Påslaget på 36,8% dekker egne kostnader som selvstendig
-                      næringsdrivende, fordelt slik:
+                    <p className="result-explanation">
+                      Påslaget på 36,8% dekker egne kostnader som selvstendig næringsdrivende, fordelt slik:
                     </p>
-                    <ul className='result-explanation-list'>
-                      <li>
-                        15,8% - Kompensasjon for arbeidsgiveravgift og tap av
-                        rettigheter i folketrygdloven
-                      </li>
+                    <ul className="result-explanation-list">
+                      <li>15,8% - Kompensasjon for arbeidsgiveravgift og tap av rettigheter i folketrygdloven</li>
                       <li>12,0% - Kompensasjon for feriepenger</li>
-                      <li>
-                        3,6% - Trygdeavgiftsforhøyelse for næringsdrivende
-                      </li>
+                      <li>3,6% - Trygdeavgiftsforhøyelse for næringsdrivende</li>
                       <li>0,4% - Frivillig yrkesskadeforsikring</li>
-                      <li>
-                        5,0% - Administrative kostnader for næringsvirksomhet
-                      </li>
+                      <li>5,0% - Administrative kostnader for næringsvirksomhet</li>
                     </ul>
 
-                    <div className='separator'></div>
+                    <div className="separator"></div>
 
-                    <h3 className='result-subtitle'>Total honorar:</h3>
-                    <p className='result-value'>
-                      {Number(salary.totalHourlyFee).toLocaleString('no-NO', {
+                    <h3 className="result-subtitle">Total honorar:</h3>
+                    <p className="result-value">
+                      {Number(salary.totalHourlyFee).toLocaleString('no-NO', { maximumFractionDigits: 0 })} NOK
+                    </p>
+                    <p className="result-explanation">
+                      (Timesats{' '}
+                      {Number(salary.selfEmployedHourlyRate).toLocaleString('no-NO', {
                         maximumFractionDigits: 0,
                       })}{' '}
-                      NOK
-                    </p>
-                    <p className='result-explanation'>
-                      (Timesats{' '}
-                      {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                        'no-NO',
-                        {
-                          maximumFractionDigits: 0,
-                        }
-                      )}{' '}
                       NOK × {projectHours} timer)
                     </p>
                   </section>
                 </>
               ) : (
-                <p className='result-explanation'>
+                <p className="result-explanation">
                   Vennligst fyll ut alle feltene for å se beregnet lønn.
                 </p>
               )}
             </div>
           ) : (
-            <p className='result-explanation'>
+            <p className="result-explanation">
               Vennligst fyll ut alle feltene for å se beregnet lønn.
             </p>
           )}
         </div>
       </div>
-      <div className='clear-button-container'>
-        <button
-          type='button'
-          onClick={resetForm}
-          className='btn btn-primary'
-          aria-label='Nullstill alle verdier'
-        >
+      <div className="clear-button-container">
+        <button type="button" onClick={resetForm} className="btn btn-primary" aria-label="Nullstill alle verdier">
           Nullstill
         </button>
       </div>

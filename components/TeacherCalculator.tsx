@@ -90,7 +90,6 @@ export function TeacherCalculator() {
     }
   }, [role, seniority, classCount, classDuration, numberOfClasses]);
 
-  // Add the resetForm function after the state declarations
   const resetForm = () => {
     setRole('');
     setSeniority('');
@@ -124,7 +123,7 @@ export function TeacherCalculator() {
 
       <div className='card'>
         <div className='card-header'>
-          <h2 className='card-title'>Pedagog lønnsberegning</h2>
+          <h2 className='card-title'>Danselærer lønnsberegning</h2>
         </div>
         <div className='card-content'>
           <div className='input-group'>
@@ -140,7 +139,6 @@ export function TeacherCalculator() {
                   e.target.value as 'Assistent' | 'Danselærer' | 'Dansepedagog'
                 );
                 setSeniority('');
-                setSalary(null);
               }}
             >
               <option value=''>Velg rolle</option>
@@ -150,113 +148,86 @@ export function TeacherCalculator() {
             </select>
           </div>
 
-          {role && (
-            <div className='input-group'>
-              <label htmlFor='seniority' className='label'>
-                Ansiennitet
-              </label>
-              <select
-                id='seniority'
-                className='styled-select'
-                value={seniority}
-                onChange={(e) => setSeniority(e.target.value)}
-              >
-                <option value=''>Velg ansiennitet</option>
-                {seniorityOptions.map((ansiennitet) => (
-                  <option key={ansiennitet} value={ansiennitet}>
-                    {ansiennitet}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div className='input-group'>
+            <label htmlFor='seniority' className='label'>
+              Ansiennitet
+            </label>
+            <select
+              id='seniority'
+              className='styled-select'
+              value={seniority}
+              onChange={(e) => setSeniority(e.target.value)}
+              disabled={!role}
+            >
+              <option value=''>Velg ansiennitet</option>
+              {seniorityOptions.map((years) => (
+                <option key={years} value={years}>
+                  {years}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          {seniority && (
-            <div className='input-group'>
-              <label htmlFor='classCount' className='label'>
-                Antall klasser
-              </label>
-              <div className='radio-group'>
-                <div className='radio-option'>
-                  <input
-                    type='radio'
-                    id='singleClass'
-                    name='classCount'
-                    value='single'
-                    checked={classCount === 'single'}
-                    onChange={() => setClassCount('single')}
-                  />
-                  <label htmlFor='singleClass'>
-                    Én klasse (beregnes alltid som 90 min)
-                  </label>
-                </div>
-                <div className='radio-option'>
-                  <input
-                    type='radio'
-                    id='multipleClasses'
-                    name='classCount'
-                    value='multiple'
-                    checked={classCount === 'multiple'}
-                    onChange={() => setClassCount('multiple')}
-                  />
-                  <label htmlFor='multipleClasses'>Flere klasser</label>
-                </div>
+          <div className='input-group'>
+            <label htmlFor='classCount' className='label'>
+              Antall klasser
+            </label>
+            <select
+              id='classCount'
+              className='styled-select'
+              value={classCount}
+              onChange={(e) =>
+                setClassCount(e.target.value as 'single' | 'multiple')
+              }
+              disabled={!seniority}
+            >
+              <option value=''>Velg antall klasser</option>
+              <option value='single'>Enkelttime (90 min)</option>
+              <option value='multiple'>Flere timer</option>
+            </select>
+          </div>
+
+          {classCount === 'multiple' && (
+            <>
+              <div className='input-group'>
+                <label htmlFor='classDuration' className='label'>
+                  Lengde per klasse (minutter)
+                </label>
+                <select
+                  id='classDuration'
+                  className='styled-select'
+                  value={classDuration}
+                  onChange={(e) => setClassDuration(Number(e.target.value))}
+                >
+                  <option value=''>Velg lengde</option>
+                  {classLengthCalculationData.map((item) => (
+                    <option key={item.minutes} value={item.minutes}>
+                      {item.minutes} minutter
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
-          )}
 
-          {classCount && (
-            <div className='input-group'>
-              <label htmlFor='classDuration' className='label'>
-                Undervisningstid
-              </label>
-              <select
-                id='classDuration'
-                className='styled-select'
-                value={classDuration}
-                onChange={(e) => setClassDuration(Number(e.target.value))}
-                disabled={classCount === 'single'}
-              >
-                <option value=''>Velg undervisningstid</option>
-                {classLengthCalculationData.map((item) => (
-                  <option
-                    key={item['Undervisningstid (min)']}
-                    value={item['Undervisningstid (min)']}
-                  >
-                    {item['Undervisningstid (min)']} minutter (
-                    {item['Undervisningstid (timer)']})
-                  </option>
-                ))}
-              </select>
-              {classCount === 'single' && (
-                <p className='result-explanation'>
-                  Én klasse beregnes alltid som 90 minutter uavhengig av faktisk
-                  varighet.
-                </p>
-              )}
-            </div>
-          )}
-
-          {classCount === 'multiple' && classDuration && (
-            <div className='input-group'>
-              <label htmlFor='numberOfClasses' className='label'>
-                Antall klasser
-              </label>
-              <input
-                type='number'
-                id='numberOfClasses'
-                className='input'
-                value={numberOfClasses}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === '' || /^[0-9\b]+$/.test(value)) {
-                    setNumberOfClasses(value);
-                  }
-                }}
-                min='1'
-                placeholder='Antall klasser'
-              />
-            </div>
+              <div className='input-group'>
+                <label htmlFor='numberOfClasses' className='label'>
+                  Antall timer
+                </label>
+                <input
+                  type='number'
+                  id='numberOfClasses'
+                  className='input'
+                  value={numberOfClasses}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === '' || /^[0-9\b]+$/.test(value)) {
+                      setNumberOfClasses(value);
+                    }
+                  }}
+                  min='1'
+                  placeholder='Antall timer'
+                />
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -269,119 +240,88 @@ export function TeacherCalculator() {
         <div className='card-content result-grid'>
           {salary ? (
             <div>
-              {/* 1. First show the calculations for the base hourly rate */}
-              <section className='result-section'>
-                <h3 className='result-subtitle'>Timesats:</h3>
-                <p className='result-value'>
-                  {Number(salary.hourlyRate).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK
-                </p>
+              <div className='result-section'>
+                <h3 className='result-subtitle'>Grunnlønn per time:</h3>
+                <p className='result-value'>{salary.hourlyRate} NOK</p>
+              </div>
+
+              <div className='result-section'>
+                <h3 className='result-subtitle'>Lengdemultiplikator:</h3>
+                <p className='result-value'>x{salary.classMultiplier}</p>
                 <p className='result-explanation'>
-                  Basert på {role} med {seniority} års ansiennitet
+                  (Basert på {classDuration} minutters varighet)
                 </p>
+              </div>
+
+              <div className='result-section'>
+                <h3 className='result-subtitle'>Grunnlønn per klasse:</h3>
+                <p className='result-value'>{salary.baseSalaryPerClass} NOK</p>
                 <p className='result-explanation'>
-                  For {classDuration} minutter:{' '}
-                  {Number(salary.hourlyRate).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK × {salary.classMultiplier} ={' '}
-                  {Number(salary.baseSalaryPerClass).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK
+                  (Timelønn {salary.hourlyRate} NOK × lengdemultiplikator{' '}
+                  {salary.classMultiplier})
                 </p>
-              </section>
+              </div>
+
+              {classCount === 'multiple' && (
+                <div className='result-section'>
+                  <h3 className='result-subtitle'>Total grunnlønn:</h3>
+                  <p className='result-value'>{salary.totalBaseSalary} NOK</p>
+                  <p className='result-explanation'>
+                    (Grunnlønn per klasse {salary.baseSalaryPerClass} NOK ×{' '}
+                    {numberOfClasses} timer)
+                  </p>
+                </div>
+              )}
 
               <div className='separator'></div>
 
-              {/* 2. Then show the calculations for the hourly rate + 36.8% markup */}
-              <section className='result-section'>
+              <div className='result-section'>
                 <h3 className='result-subtitle'>
-                  Timesats med påslag (36,8%):
+                  Anbefalt timesats med påslag (36,8%):
                 </h3>
                 <p className='result-value'>
-                  {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                    'no-NO',
-                    { maximumFractionDigits: 0 }
-                  )}{' '}
-                  NOK
+                  {salary.selfEmployedHourlyRate} NOK
                 </p>
                 <p className='result-explanation'>
-                  {Number(salary.hourlyRate).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK × 1,368 ={' '}
-                  {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                    'no-NO',
-                    { maximumFractionDigits: 0 }
-                  )}{' '}
-                  NOK
-                </p>
-                <p className='result-explanation'>
-                  For {classDuration} minutter:{' '}
-                  {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                    'no-NO',
-                    { maximumFractionDigits: 0 }
-                  )}{' '}
-                  NOK × {salary.classMultiplier} ={' '}
-                  {Number(salary.selfEmployedRatePerClass).toLocaleString(
-                    'no-NO',
-                    { maximumFractionDigits: 0 }
-                  )}{' '}
-                  NOK
-                </p>
-                <p className='result-explanation mt-2'>
-                  Påslaget på 36,8% dekker følgende kostnader:
+                  Påslaget på 36,8% dekker egne kostnader som selvstendig
+                  næringsdrivende, fordelt slik:
                 </p>
                 <ul className='result-explanation-list'>
-                  <li className='social-costs-item'>
+                  <li>
                     15,8% - Kompensasjon for arbeidsgiveravgift og tap av
                     rettigheter i folketrygdloven
                   </li>
-                  <li className='social-costs-item'>
-                    12,0% - Kompensasjon for feriepenger
-                  </li>
-                  <li className='social-costs-item'>
-                    3,6% - Trygdeavgiftsforhøyelse for næringsdrivende
-                  </li>
-                  <li className='social-costs-item'>
-                    0,4% - Frivillig yrkesskadeforsikring
-                  </li>
-                  <li className='social-costs-item'>
-                    5,0% - Administrative kostnader for næringsvirksomhet
-                  </li>
+                  <li>12,0% - Kompensasjon for feriepenger</li>
+                  <li>3,6% - Trygdeavgiftsforhøyelse for næringsdrivende</li>
+                  <li>0,4% - Frivillig yrkesskadeforsikring</li>
+                  <li>5,0% - Administrative kostnader for næringsvirksomhet</li>
                 </ul>
-              </section>
+              </div>
 
-              {/* 3. Then show the total fee */}
+              <div className='result-section'>
+                <h3 className='result-subtitle'>
+                  Anbefalt honorar per klasse:
+                </h3>
+                <p className='result-value'>
+                  {salary.selfEmployedRatePerClass} NOK
+                </p>
+                <p className='result-explanation'>
+                  (Timesats med påslag {salary.selfEmployedHourlyRate} NOK ×
+                  lengdemultiplikator {salary.classMultiplier})
+                </p>
+              </div>
+
               {classCount === 'multiple' && (
-                <>
-                  <div className='separator'></div>
-                  <section className='result-section'>
-                    <h3 className='result-subtitle'>Totalt honorar:</h3>
-                    <p className='result-value'>
-                      {Number(salary.totalSelfEmployedFee).toLocaleString(
-                        'no-NO',
-                        { maximumFractionDigits: 0 }
-                      )}{' '}
-                      NOK
-                    </p>
-                    <p className='result-explanation'>
-                      {Number(salary.selfEmployedRatePerClass).toLocaleString(
-                        'no-NO',
-                        { maximumFractionDigits: 0 }
-                      )}{' '}
-                      NOK × {numberOfClasses} klasser ={' '}
-                      {Number(salary.totalSelfEmployedFee).toLocaleString(
-                        'no-NO',
-                        { maximumFractionDigits: 0 }
-                      )}{' '}
-                      NOK
-                    </p>
-                  </section>
-                </>
+                <div className='result-section'>
+                  <h3 className='result-subtitle'>Totalt anbefalt honorar:</h3>
+                  <p className='result-value'>
+                    {salary.totalSelfEmployedFee} NOK
+                  </p>
+                  <p className='result-explanation'>
+                    (Honorar per klasse {salary.selfEmployedRatePerClass} NOK ×{' '}
+                    {numberOfClasses} timer)
+                  </p>
+                </div>
               )}
             </div>
           ) : (
@@ -391,6 +331,7 @@ export function TeacherCalculator() {
           )}
         </div>
       </div>
+
       <div className='clear-button-container'>
         <button
           type='button'
