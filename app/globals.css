@@ -3,35 +3,218 @@
 @tailwind utilities;
 
 @layer base {
+  /* Box sizing rules */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* Remove default margin and padding */
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Allow percentage-based heights in the application */
+  html,
+  body {
+    height: 100%;
+  }
+
+  /* Improve text rendering */
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Improve media defaults */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Remove built-in form typography styles */
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  /* Avoid text overflows */
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  /* Create a root stacking context */
+  #root,
+  #__next {
+    isolation: isolate;
+  }
+
+  /* CSS Variables */
   :root {
-    --background: 280 50% 90%;
-    --foreground: 280 60% 15%;
+    --background: 280 50% 95%;
+    --foreground: 280 60% 10%;
     --card: 280 50% 98%;
-    --card-foreground: 280 60% 15%;
-    --popover: 280 50% 98%;
-    --popover-foreground: 280 60% 15%;
-    --primary: 280 60% 35%;
+    --card-foreground: 280 60% 10%;
+    --primary: 280 60% 30%;
     --primary-foreground: 280 10% 98%;
-    --secondary: 280 30% 85%;
-    --secondary-foreground: 280 60% 15%;
-    --muted: 280 30% 85%;
-    --muted-foreground: 280 60% 30%;
-    --accent: 280 30% 85%;
-    --accent-foreground: 280 60% 15%;
+    --secondary: 280 30% 80%;
+    --secondary-foreground: 280 60% 10%;
+    --muted: 280 30% 80%;
+    --muted-foreground: 280 60% 25%;
+    --accent: 280 30% 80%;
+    --accent-foreground: 280 60% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 280 60% 70%;
-    --input: 280 60% 70%;
-    --ring: 280 60% 35%;
+    --border: 280 60% 60%;
+    --input: 280 60% 60%;
+    --ring: 280 60% 30%;
     --radius: 0.5rem;
-  }
-}
 
-@layer base {
+    /* Spacing scale */
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-3: 0.75rem;
+    --spacing-4: 1rem;
+    --spacing-6: 1.5rem;
+    --spacing-8: 2rem;
+    --spacing-12: 3rem;
+    --spacing-16: 4rem;
+
+    /* Typography scale */
+    --font-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+    --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+    --font-size-lg: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+    --font-size-xl: clamp(1.75rem, 1.5rem + 1.25vw, 2.25rem);
+    --font-size-2xl: clamp(2.5rem, 2.25rem + 1.5vw, 3.25rem);
+  }
+
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-4);
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-md font-semibold transition-colors cursor-pointer border-2 border-primary outline-none;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .btn-primary:hover {
+    @apply bg-primary/90 border-primary/90;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-secondary/90 border-primary/90;
+  }
+
+  .btn:focus {
+    @apply ring-2 ring-offset-2 ring-primary;
+  }
+
+  .card {
+    @apply bg-card text-card-foreground rounded-md shadow-sm p-6;
+  }
+
+  .input,
+  .select,
+  .styled-select {
+    @apply bg-background border-2 border-border rounded-md p-2 w-full mb-3 text-foreground;
+    appearance: none;
+  }
+
+  .input:focus,
+  .select:focus,
+  .styled-select:focus {
+    @apply outline-none border-primary ring-2 ring-primary/20;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  .form {
+    @apply grid gap-6;
+  }
+
+  .input-group {
+    @apply grid gap-1 mb-4;
+  }
+
+  .label {
+    @apply font-semibold text-primary mb-1;
+  }
+
+  .separator {
+    @apply h-px bg-border my-8;
+  }
+
+  .calculator-content {
+    @apply mt-0;
+  }
+
+  .total-salary-value {
+    @apply text-xl font-bold leading-tight;
+  }
+
+  .total-salary-breakdown {
+    @apply text-sm leading-relaxed;
+  }
+
+  .result-section {
+    @apply mb-4;
+  }
+
+  .result-value {
+    @apply text-lg font-semibold leading-snug;
+  }
+
+  .result-explanation {
+    @apply text-sm leading-relaxed;
+  }
+
+  .social-costs-list {
+    @apply list-none pl-0;
+  }
+
+  .social-costs-item {
+    @apply mb-2;
   }
 }
