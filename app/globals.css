@@ -147,6 +147,18 @@
     @apply bg-card text-card-foreground rounded-md shadow-sm p-6;
   }
 
+  .card-header {
+    @apply mb-4;
+  }
+
+  .card-title {
+    @apply text-xl font-bold text-primary;
+  }
+
+  .card-content {
+    @apply space-y-4;
+  }
+
   .input,
   .select,
   .styled-select {
@@ -190,31 +202,66 @@
     @apply mt-0;
   }
 
-  .total-salary-value {
-    @apply text-xl font-bold leading-tight;
+  .result-card {
+    @apply mt-6;
   }
 
-  .total-salary-breakdown {
-    @apply text-sm leading-relaxed;
+  .result-grid {
+    @apply grid gap-6;
   }
 
   .result-section {
     @apply mb-4;
   }
 
+  .result-subtitle {
+    @apply text-lg font-semibold text-primary mb-2;
+  }
+
   .result-value {
-    @apply text-lg font-semibold leading-snug;
+    @apply text-xl font-bold mb-2;
   }
 
   .result-explanation {
-    @apply text-sm leading-relaxed;
+    @apply text-sm text-muted-foreground;
   }
 
-  .social-costs-list {
-    @apply list-none pl-0;
+  .result-explanation-list {
+    @apply list-disc pl-6 mt-2 space-y-1 text-sm text-muted-foreground;
   }
 
-  .social-costs-item {
-    @apply mb-2;
+  .clear-button-container {
+    @apply mt-6 text-center;
+  }
+
+  /* View transition animations */
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+
+  ::view-transition-old(calculator) {
+    animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-out;
+  }
+
+  ::view-transition-new(calculator) {
+    animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-in;
   }
 }
