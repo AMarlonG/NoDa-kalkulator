@@ -365,11 +365,12 @@ export function DancerCalculator() {
                       <section className='result-section social-costs'>
                         <h3 className='result-subtitle'>Sosiale kostnader:</h3>
                         <p className='result-value'>
-                          {salary.socialCosts?.total &&
-                            Number(salary.socialCosts.total).toLocaleString(
-                              'no-NO',
-                              { maximumFractionDigits: 0 }
-                            )}{' '}
+                          {salary.socialCosts?.total
+                            ? Number(salary.socialCosts.total).toLocaleString(
+                                'no-NO',
+                                { maximumFractionDigits: 0 }
+                              )
+                            : '0'}{' '}
                           NOK
                         </p>
                         <div className='social-costs-list'>
@@ -380,12 +381,13 @@ export function DancerCalculator() {
                               maximumFractionDigits: 0,
                             })}{' '}
                             NOK x 0,102 ={' '}
-                            {salary.socialCosts?.holidayPay &&
-                              Number(
-                                salary.socialCosts.holidayPay
-                              ).toLocaleString('no-NO', {
-                                maximumFractionDigits: 0,
-                              })}{' '}
+                            {salary.socialCosts?.holidayPay
+                              ? Number(
+                                  salary.socialCosts.holidayPay
+                                ).toLocaleString('no-NO', {
+                                  maximumFractionDigits: 0,
+                                })
+                              : '0'}{' '}
                             NOK
                           </li>
                           <li className='social-costs-item'>
@@ -395,12 +397,13 @@ export function DancerCalculator() {
                               maximumFractionDigits: 0,
                             })}{' '}
                             NOK x 0,141 ={' '}
-                            {salary.socialCosts?.employerTax &&
-                              Number(
-                                salary.socialCosts.employerTax
-                              ).toLocaleString('no-NO', {
-                                maximumFractionDigits: 0,
-                              })}{' '}
+                            {salary.socialCosts?.employerTax
+                              ? Number(
+                                  salary.socialCosts.employerTax
+                                ).toLocaleString('no-NO', {
+                                  maximumFractionDigits: 0,
+                                })
+                              : '0'}{' '}
                             NOK
                           </li>
                           <li className='social-costs-item'>
@@ -410,11 +413,13 @@ export function DancerCalculator() {
                               maximumFractionDigits: 0,
                             })}{' '}
                             NOK x 0,02 ={' '}
-                            {salary.socialCosts?.pension &&
-                              Number(salary.socialCosts.pension).toLocaleString(
-                                'no-NO',
-                                { maximumFractionDigits: 0 }
-                              )}{' '}
+                            {salary.socialCosts?.pension
+                              ? Number(
+                                  salary.socialCosts.pension
+                                ).toLocaleString('no-NO', {
+                                  maximumFractionDigits: 0,
+                                })
+                              : '0'}{' '}
                             NOK
                           </li>
                         </div>
