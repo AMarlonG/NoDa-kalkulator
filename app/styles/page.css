@@ -3,13 +3,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--spacing-8) var(--spacing-4);
+  padding: var(--spacing-16);
 }
 
 .header {
   width: 100%;
   max-width: 36rem;
-  margin-bottom: var(--spacing-8);
+  margin-bottom: var(--spacing-12);
 }
 
 .title-container {
@@ -17,18 +17,18 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: var(--spacing-6);
+  margin-bottom: var(--spacing-8);
 }
 
 .title {
-  font-size: var(--font-size-2xl);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 700;
   color: var(--primary);
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
 }
 
 .description {
-  font-size: var(--font-size-lg);
+  font-size: clamp(1rem, 3vw, 1.25rem);
   color: var(--muted-foreground);
 }
 
@@ -38,32 +38,32 @@
   max-width: 36rem;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-2);
+  gap: clamp(0.5rem, 2vw, 1rem);
 }
 
 /* Each row contains 2 buttons */
 .nav-row {
   display: flex;
-  gap: var(--spacing-2);
+  gap: clamp(0.5rem, 2vw, 1rem);
   width: 100%;
 }
 
 /* Button styling */
 .nav-button {
   flex: 1;
-  padding: var(--spacing-3) var(--spacing-4);
+  padding: clamp(0.5rem, 1.5vw, 0.75rem);
   border-radius: var(--radius);
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
   border: 2px solid var(--primary);
   outline: none;
-  font-size: var(--font-size-base);
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 3rem;
+  height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,52 +92,30 @@
 .calculator-section {
   width: 100%;
   max-width: 36rem;
-  margin-top: var(--spacing-6);
+  margin-top: var(--spacing-8);
   view-transition-name: calculator;
 }
 
 .footer {
   width: 100%;
   max-width: 36rem;
-  margin-top: var(--spacing-12);
+  margin-top: var(--spacing-16);
   text-align: center;
-  padding: var(--spacing-4);
 }
 
 .footer p {
   color: var(--muted-foreground);
-  margin-bottom: var(--spacing-2);
-  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-4);
 }
 
 .footer a {
   color: var(--primary);
   text-decoration: underline;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .footer a:hover {
-  color: var(--primary);
-  opacity: 0.8;
-}
-
-@media (max-width: 640px) {
-  .main {
-    padding: var(--spacing-4) var(--spacing-2);
-  }
-
-  .nav-button {
-    font-size: var(--font-size-sm);
-    padding: var(--spacing-2) var(--spacing-3);
-  }
-
-  .title {
-    font-size: var(--font-size-xl);
-  }
-
-  .description {
-    font-size: var(--font-size-base);
-  }
+  color: hsl(280, 65%, 30%);
 }
 
 @keyframes slide-in {
