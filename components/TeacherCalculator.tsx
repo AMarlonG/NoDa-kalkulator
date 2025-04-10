@@ -104,8 +104,9 @@ export function TeacherCalculator() {
     <form className='form calculator-content'>
       <div className='calculator-intro'>
         <p className='calculator-intro-text'>
-          Denne utregningen gjelder for selvstendig næringsdrivende i private
-          danseskoler
+          Denne utregningen gjelder for kortere engasjement ved private
+          danseskoler, og kun til forberedelse og undervisning av klasser. Møter
+          og forestillinger er ikke inkludert.
         </p>
         <ul className='calculator-intro-list'>
           <li>
@@ -333,7 +334,8 @@ export function TeacherCalculator() {
                   NOK
                 </p>
                 <p className='result-explanation mt-2'>
-                  Påslaget på 36,8% dekker følgende kostnader:
+                  Påslaget på 36,8% dekker utgifter til ditt firma, som
+                  følgende:
                 </p>
                 <ul className='result-explanation-list'>
                   <li className='social-costs-item'>

@@ -269,8 +269,8 @@ export function DancerCalculator() {
                           NOK
                         </p>
                         <p className='result-explanation'>
-                          Påslaget på 36,8% dekker egne kostnader som
-                          selvstendig næringsdrivende, fordelt slik:
+                          Påslaget på 36,8% dekker utgifter til ditt firma, som
+                          følgende:
                         </p>
                         <ul className='result-explanation-list'>
                           <li>
