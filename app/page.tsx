@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { DancerCalculator } from '@/components/DancerCalculator';
-import { ChoreographerCalculator } from '@/components/ChoreographerCalculator';
-import { DancerChoreographerCalculator } from '@/components/DancerChoreographerCalculator';
-import { TeacherCalculator } from '@/components/TeacherCalculator';
+import { DancerCalculator } from './components/DancerCalculator';
+import { ChoreographerCalculator } from './components/ChoreographerCalculator';
+import { DancerChoreographerCalculator } from './components/DancerChoreographerCalculator';
+import { TeacherCalculator } from './components/TeacherCalculator';
 import './styles/page.css';
 
 function isViewTransitionSupported() {
@@ -30,7 +30,7 @@ export default function Home() {
   );
 
   useEffect(() => {
-    if (isViewTransitionSupported()) {
+    if (isViewTransitionSupported() && typeof document !== 'undefined') {
       document.documentElement.style.display = 'none';
       document.documentElement.offsetHeight;
       document.documentElement.style.display = '';
@@ -65,15 +65,15 @@ export default function Home() {
 
   return (
     <main className='main'>
-      <a
-        href='#calculator-section'
-        className='sr-only focus-visible:not-sr-only'
-      >
-        Hopp til hovedinnhold
-      </a>
       <header className='header'>
         <div className='title-container'>
-          <h1 className='title'>NoDas lønnskalkulator</h1>
+          <h1
+            className='title'
+            onClick={() => updateActiveCalculatorWithTransition(null)}
+            style={{ cursor: 'pointer' }}
+          >
+            NoDas lønnskalkulator
+          </h1>
           <p className='description'>Beregn din rettferdige lønn</p>
         </div>
         <div className='nav-container'>

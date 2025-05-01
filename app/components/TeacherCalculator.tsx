@@ -6,8 +6,8 @@ import {
   classLengthCalculationData,
   getMultiplierForClassLength,
 } from '@/lib/classLengthCalculation';
-import '../app/styles/base.css';
-import '../app/styles/calculator-common.css';
+import '../styles/base.css';
+import '../styles/calculator-common.css';
 
 export function TeacherCalculator() {
   const [role, setRole] = useState<
