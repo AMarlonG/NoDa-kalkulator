@@ -1,129 +1,129 @@
 export interface TeacherSalary {
-  Rolle: "Assistent" | "Danselærer" | "Dansepedagog"
-  Ansiennitet: number
-  Lønnstrinn: number
-  Timelønn: number
+  Rolle: 'Assistent' | 'Danselærer' | 'Dansepedagog';
+  Ansiennitet: number;
+  Lønnstrinn: number;
+  Timelønn: number;
 }
 
 export const teacherSalaryData: TeacherSalary[] = [
   {
-    Rolle: "Assistent",
+    Rolle: 'Assistent',
     Ansiennitet: 0,
     Lønnstrinn: 1,
-    Timelønn: 289,
+    Timelønn: 302,
   },
   {
-    Rolle: "Assistent",
+    Rolle: 'Assistent',
     Ansiennitet: 2,
     Lønnstrinn: 2,
-    Timelønn: 321,
+    Timelønn: 335,
   },
   {
-    Rolle: "Assistent",
+    Rolle: 'Assistent',
     Ansiennitet: 4,
     Lønnstrinn: 3,
-    Timelønn: 336,
+    Timelønn: 351,
   },
   {
-    Rolle: "Assistent",
+    Rolle: 'Assistent',
     Ansiennitet: 6,
     Lønnstrinn: 4,
-    Timelønn: 352,
+    Timelønn: 367,
   },
   {
-    Rolle: "Assistent",
+    Rolle: 'Assistent',
     Ansiennitet: 8,
     Lønnstrinn: 5,
-    Timelønn: 370,
+    Timelønn: 386,
   },
   {
-    Rolle: "Danselærer",
+    Rolle: 'Danselærer',
     Ansiennitet: 0,
     Lønnstrinn: 6,
-    Timelønn: 427,
+    Timelønn: 446,
   },
   {
-    Rolle: "Danselærer",
+    Rolle: 'Danselærer',
     Ansiennitet: 2,
     Lønnstrinn: 7,
-    Timelønn: 449,
+    Timelønn: 469,
   },
   {
-    Rolle: "Danselærer",
+    Rolle: 'Danselærer',
     Ansiennitet: 4,
     Lønnstrinn: 8,
-    Timelønn: 472,
+    Timelønn: 493,
   },
   {
-    Rolle: "Danselærer",
+    Rolle: 'Danselærer',
     Ansiennitet: 6,
     Lønnstrinn: 9,
-    Timelønn: 498,
+    Timelønn: 520,
   },
   {
-    Rolle: "Danselærer",
+    Rolle: 'Danselærer',
     Ansiennitet: 8,
     Lønnstrinn: 10,
-    Timelønn: 522,
+    Timelønn: 545,
   },
   {
-    Rolle: "Danselærer",
+    Rolle: 'Danselærer',
     Ansiennitet: 10,
     Lønnstrinn: 11,
-    Timelønn: 550,
+    Timelønn: 574,
   },
   {
-    Rolle: "Danselærer",
+    Rolle: 'Danselærer',
     Ansiennitet: 12,
     Lønnstrinn: 12,
-    Timelønn: 579,
+    Timelønn: 604,
   },
   {
-    Rolle: "Dansepedagog",
+    Rolle: 'Dansepedagog',
     Ansiennitet: 0,
     Lønnstrinn: 12,
-    Timelønn: 579,
+    Timelønn: 604,
   },
   {
-    Rolle: "Dansepedagog",
+    Rolle: 'Dansepedagog',
     Ansiennitet: 2,
     Lønnstrinn: 13,
-    Timelønn: 608,
+    Timelønn: 635,
   },
   {
-    Rolle: "Dansepedagog",
+    Rolle: 'Dansepedagog',
     Ansiennitet: 4,
     Lønnstrinn: 14,
-    Timelønn: 640,
+    Timelønn: 668,
   },
   {
-    Rolle: "Dansepedagog",
+    Rolle: 'Dansepedagog',
     Ansiennitet: 6,
     Lønnstrinn: 15,
-    Timelønn: 673,
+    Timelønn: 703,
   },
   {
-    Rolle: "Dansepedagog",
+    Rolle: 'Dansepedagog',
     Ansiennitet: 8,
     Lønnstrinn: 16,
-    Timelønn: 705,
+    Timelønn: 736,
   },
   {
-    Rolle: "Dansepedagog",
+    Rolle: 'Dansepedagog',
     Ansiennitet: 10,
     Lønnstrinn: 17,
-    Timelønn: 742,
+    Timelønn: 775,
   },
   {
-    Rolle: "Dansepedagog",
+    Rolle: 'Dansepedagog',
     Ansiennitet: 12,
     Lønnstrinn: 18,
-    Timelønn: 778,
+    Timelønn: 812,
   },
   {
-    Rolle: "Dansepedagog",
+    Rolle: 'Dansepedagog',
     Ansiennitet: 14,
     Lønnstrinn: 19,
-    Timelønn: 816,
+    Timelønn: 852,
   },
-]
+];
