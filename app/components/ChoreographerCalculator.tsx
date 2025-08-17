@@ -23,14 +23,7 @@ export function ChoreographerCalculator() {
     totalHourlyFee?: string;
     productionSalary?: string;
     rehearsalSalary?: string;
-    baseSalary?: string;
     totalSalary?: string;
-    socialCosts?: {
-      total?: string;
-      holidayPay: string;
-      employerTax: string;
-      pension: string;
-    };
   } | null>(null);
 
   const resetForm = () => {
@@ -57,14 +50,7 @@ export function ChoreographerCalculator() {
           );
           const productionSalary = minuteRate * Number(productionLength);
           const rehearsalSalary = monthlyRate * Number(rehearsalMonths);
-          const baseSalary = productionSalary + rehearsalSalary;
-
-          // Calculate social costs
-          const holidayPay = baseSalary * 0.102;
-          const employerTax = baseSalary * 0.141;
-          const pension = baseSalary * 0.02;
-          const socialCostsTotal = holidayPay + employerTax + pension;
-          const totalSalary = baseSalary + socialCostsTotal;
+          const totalSalary = productionSalary + rehearsalSalary;
 
           setSalary({
             minuteRate: selectedData['Minuttsats koreografi'],
@@ -75,14 +61,7 @@ export function ChoreographerCalculator() {
             rehearsalSalary: rehearsalSalary.toLocaleString('no-NO', {
               maximumFractionDigits: 0,
             }),
-            baseSalary: Math.round(baseSalary).toString(),
             totalSalary: Math.round(totalSalary).toString(),
-            socialCosts: {
-              total: Math.round(socialCostsTotal).toString(),
-              holidayPay: Math.round(holidayPay).toString(),
-              employerTax: Math.round(employerTax).toString(),
-              pension: Math.round(pension).toString(),
-            },
           });
         } else {
           setSalary(null);
@@ -273,7 +252,7 @@ export function ChoreographerCalculator() {
                 <>
                   {salary.totalSalary ? (
                     <>
-                      <div className='result-section'>
+                      <section className='result-section'>
                         <h3 className='result-subtitle'>
                           Lønn for koreografi:
                         </h3>
@@ -284,8 +263,8 @@ export function ChoreographerCalculator() {
                           (Minuttsats {salary.minuteRate} NOK x{' '}
                           {productionLength} minutter)
                         </p>
-                      </div>
-                      <div className='result-section'>
+                      </section>
+                      <section className='result-section'>
                         <h3 className='result-subtitle'>
                           Lønn for innstudering:
                         </h3>
@@ -296,88 +275,9 @@ export function ChoreographerCalculator() {
                           (Månedssats {salary.monthlyRate} NOK x{' '}
                           {rehearsalMonths} måneder)
                         </p>
-                      </div>
-                      <div className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Grunnlønn for produksjonen:
-                        </h3>
-                        <p className='result-value'>
-                          {Number(salary.baseSalary).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
-                        </p>
-                        <p className='result-explanation'>
-                          (Lønn for koreografi + Lønn for innstudering)
-                        </p>
-                      </div>
+                      </section>
                       <div className='separator'></div>
-                      {salary.socialCosts && (
-                        <div className='result-section social-costs'>
-                          <h3 className='result-subtitle'>
-                            Sosiale kostnader:
-                          </h3>
-                          <p className='result-value'>
-                            {Number(salary.socialCosts.total).toLocaleString(
-                              'no-NO',
-                              { maximumFractionDigits: 0 }
-                            )}{' '}
-                            NOK
-                          </p>
-                          <ul className='social-costs-list'>
-                            <li className='social-costs-item'>
-                              Feriepenger (10,2%):
-                              <br />
-                              {Number(salary.baseSalary).toLocaleString(
-                                'no-NO',
-                                { maximumFractionDigits: 0 }
-                              )}{' '}
-                              NOK x 0,102 ={' '}
-                              {Number(
-                                salary.socialCosts.holidayPay
-                              ).toLocaleString('no-NO', {
-                                maximumFractionDigits: 0,
-                              })}{' '}
-                              NOK
-                            </li>
-                            <li className='social-costs-item'>
-                              Arbeidsgiveravgift (14,1%):
-                              <br />
-                              {Number(salary.baseSalary).toLocaleString(
-                                'no-NO',
-                                { maximumFractionDigits: 0 }
-                              )}{' '}
-                              NOK x 0,141 ={' '}
-                              {Number(
-                                salary.socialCosts.employerTax
-                              ).toLocaleString('no-NO', {
-                                maximumFractionDigits: 0,
-                              })}{' '}
-                              NOK
-                            </li>
-                            <li className='social-costs-item'>
-                              Pensjon (2%):
-                              <br />
-                              {Number(salary.baseSalary).toLocaleString(
-                                'no-NO',
-                                { maximumFractionDigits: 0 }
-                              )}{' '}
-                              NOK x 0,02 ={' '}
-                              {Number(
-                                salary.socialCosts.pension
-                              ).toLocaleString('no-NO', {
-                                maximumFractionDigits: 0,
-                              })}{' '}
-                              NOK
-                            </li>
-                          </ul>
-                          <p className='result-explanation'>
-                            (Beregnet basert på grunnlønn for produksjonen)
-                          </p>
-                        </div>
-                      )}
-                      <div className='separator'></div>
-                      <div className='result-section total-salary'>
+                      <section className='result-section total-salary'>
                         <h3 className='result-subtitle'>
                           Total lønn for produksjonen:
                         </h3>
@@ -388,10 +288,9 @@ export function ChoreographerCalculator() {
                           NOK
                         </p>
                         <p className='result-explanation'>
-                          (Inkluderer grunnlønn for produksjonen, samt alle
-                          sosiale kostnader)
+                          (Lønn for koreografi + Lønn for innstudering)
                         </p>
-                      </div>
+                      </section>
                     </>
                   ) : (
                     <p className='result-explanation'>
@@ -401,10 +300,10 @@ export function ChoreographerCalculator() {
                   )}
                 </>
               ) : workType === 'theater' && salary.annualSalary ? (
-                <div className='result-section'>
+                <section className='result-section'>
                   <h3 className='result-subtitle'>Årslønn:</h3>
                   <p className='result-value'>{salary.annualSalary} NOK</p>
-                </div>
+                </section>
               ) : workType === 'selfEmployed' &&
                 projectHours &&
                 salary.selfEmployedHourlyRate ? (

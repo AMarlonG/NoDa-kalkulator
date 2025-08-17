@@ -147,13 +147,13 @@ export default function Home() {
           satser.
         </p>
         <p>
-          For mer informasjon, se{' '}
+          For mer informasjon,{' '}
           <a
             href='https://norskedansekunstnere.no/lonn-og-arbeidsliv/veiledende-satser'
             target='_blank'
             rel='noopener noreferrer'
           >
-            NoDas oversikt over veiledende satser.
+            se NoDas oversikt over veiledende satser.
           </a>
         </p>
       </footer>

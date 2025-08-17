@@ -17,14 +17,6 @@ export function DancerCalculator() {
     selfEmployedHourlyRate?: string;
     projectSalary?: string;
     totalHourlyFee?: string;
-    baseSalary?: string;
-    totalSalary?: string;
-    socialCosts?: {
-      total?: string;
-      holidayPay: string;
-      employerTax: string;
-      pension: string;
-    };
   } | null>(null);
 
   const resetForm = () => {
@@ -74,26 +66,12 @@ export function DancerCalculator() {
             selectedData['Årslønn prosjekt'].replace(/\s/g, '')
           );
           const dailyRate = annualSalary / 229;
-          const baseSalary = dailyRate * Number(projectDays);
-
-          const holidayPay = baseSalary * 0.102;
-          const employerTax = baseSalary * 0.141;
-          const pension = baseSalary * 0.02;
-          const socialCostsTotal = holidayPay + employerTax + pension;
-          const totalSalary = baseSalary + socialCostsTotal;
+          const projectSalary = dailyRate * Number(projectDays);
 
           setSalary({
             annualSalary: selectedData['Årslønn prosjekt'],
             dailyRate: Math.round(dailyRate).toString(),
-            projectSalary: Math.round(baseSalary).toString(),
-            baseSalary: Math.round(baseSalary).toString(),
-            totalSalary: Math.round(totalSalary).toString(),
-            socialCosts: {
-              total: Math.round(socialCostsTotal).toString(),
-              holidayPay: Math.round(holidayPay).toString(),
-              employerTax: Math.round(employerTax).toString(),
-              pension: Math.round(pension).toString(),
-            },
+            projectSalary: Math.round(projectSalary).toString(),
           });
         } else {
           setSalary(null);
@@ -310,7 +288,7 @@ export function DancerCalculator() {
                         </p>
                       </section>
                     </>
-                  ) : employmentType === 'project' && salary.totalSalary ? (
+                  ) : employmentType === 'project' && salary.projectSalary ? (
                     <>
                       <section className='result-section'>
                         <h3 className='result-subtitle'>
@@ -345,10 +323,10 @@ export function DancerCalculator() {
                       </section>
                       <section className='result-section'>
                         <h3 className='result-subtitle'>
-                          Grunnlønn for prosjektet:
+                          Lønn for prosjektet:
                         </h3>
                         <p className='result-value'>
-                          {Number(salary.baseSalary).toLocaleString('no-NO', {
+                          {Number(salary.projectSalary).toLocaleString('no-NO', {
                             maximumFractionDigits: 0,
                           })}{' '}
                           NOK
@@ -359,88 +337,6 @@ export function DancerCalculator() {
                             maximumFractionDigits: 0,
                           })}{' '}
                           NOK x {projectDays} dager)
-                        </p>
-                      </section>
-                      <div className='separator'></div>
-                      <section className='result-section social-costs'>
-                        <h3 className='result-subtitle'>Sosiale kostnader:</h3>
-                        <p className='result-value'>
-                          {salary.socialCosts?.total
-                            ? Number(salary.socialCosts.total).toLocaleString(
-                                'no-NO',
-                                { maximumFractionDigits: 0 }
-                              )
-                            : '0'}{' '}
-                          NOK
-                        </p>
-                        <div className='social-costs-list'>
-                          <li className='social-costs-item'>
-                            Feriepenger (10,2%):
-                            <br />
-                            {Number(salary.baseSalary).toLocaleString('no-NO', {
-                              maximumFractionDigits: 0,
-                            })}{' '}
-                            NOK x 0,102 ={' '}
-                            {salary.socialCosts?.holidayPay
-                              ? Number(
-                                  salary.socialCosts.holidayPay
-                                ).toLocaleString('no-NO', {
-                                  maximumFractionDigits: 0,
-                                })
-                              : '0'}{' '}
-                            NOK
-                          </li>
-                          <li className='social-costs-item'>
-                            Arbeidsgiveravgift (14,1%):
-                            <br />
-                            {Number(salary.baseSalary).toLocaleString('no-NO', {
-                              maximumFractionDigits: 0,
-                            })}{' '}
-                            NOK x 0,141 ={' '}
-                            {salary.socialCosts?.employerTax
-                              ? Number(
-                                  salary.socialCosts.employerTax
-                                ).toLocaleString('no-NO', {
-                                  maximumFractionDigits: 0,
-                                })
-                              : '0'}{' '}
-                            NOK
-                          </li>
-                          <li className='social-costs-item'>
-                            Pensjon (2%):
-                            <br />
-                            {Number(salary.baseSalary).toLocaleString('no-NO', {
-                              maximumFractionDigits: 0,
-                            })}{' '}
-                            NOK x 0,02 ={' '}
-                            {salary.socialCosts?.pension
-                              ? Number(
-                                  salary.socialCosts.pension
-                                ).toLocaleString('no-NO', {
-                                  maximumFractionDigits: 0,
-                                })
-                              : '0'}{' '}
-                            NOK
-                          </li>
-                        </div>
-                        <p className='result-explanation'>
-                          (Beregnet basert på grunnlønn for prosjektet)
-                        </p>
-                      </section>
-                      <div className='separator'></div>
-                      <section className='result-section total-salary'>
-                        <h3 className='result-subtitle'>
-                          Total lønn for prosjektet:
-                        </h3>
-                        <p className='total-salary-value'>
-                          {Number(salary.totalSalary).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
-                        </p>
-                        <p className='result-explanation'>
-                          (Inkluderer grunnlønn for prosjektet og alle sosiale
-                          kostnader)
                         </p>
                       </section>
                     </>

@@ -18,9 +18,7 @@ export function DancerChoreographerCalculator() {
   const [salary, setSalary] = useState<{
     dancerSalary: string;
     choreographerSalary: string;
-    combinedBaseSalary: string;
     totalSalary: string;
-    socialCostsTotal: string;
     breakdown: {
       dancerBase: string;
       dancerDailySalary: string;
@@ -32,12 +30,6 @@ export function DancerChoreographerCalculator() {
       choreographerRates: {
         minuteRate: string;
         monthlyRate: string;
-      };
-      socialCosts: {
-        total: string;
-        holidayPay: string;
-        employerTax: string;
-        pension: string;
       };
     };
   } | null>(null);
@@ -119,19 +111,12 @@ export function DancerChoreographerCalculator() {
           choreographerSalary = primarySalary;
         }
 
-        const combinedBaseSalary = primarySalary + secondarySalary;
-        const holidayPay = combinedBaseSalary * 0.102;
-        const employerTax = combinedBaseSalary * 0.141;
-        const pension = combinedBaseSalary * 0.02;
-        const socialCostsTotal = holidayPay + employerTax + pension;
-        const totalSalary = combinedBaseSalary + socialCostsTotal;
+        const totalSalary = primarySalary + secondarySalary;
 
         setSalary({
           dancerSalary: Math.round(dancerSalary).toString(),
           choreographerSalary: Math.round(choreographerSalary).toString(),
-          combinedBaseSalary: Math.round(combinedBaseSalary).toString(),
           totalSalary: Math.round(totalSalary).toString(),
-          socialCostsTotal: Math.round(socialCostsTotal).toString(),
           breakdown: {
             dancerBase: Math.round(dancerYearlySalary).toString(),
             dancerDailySalary: Math.round(dancerDailySalary).toString(),
@@ -147,12 +132,6 @@ export function DancerChoreographerCalculator() {
             choreographerRates: {
               minuteRate: Math.round(choreographerMinuteRate).toString(),
               monthlyRate: Math.round(choreographerMonthlyRate).toString(),
-            },
-            socialCosts: {
-              total: Math.round(socialCostsTotal).toString(),
-              holidayPay: Math.round(holidayPay).toString(),
-              employerTax: Math.round(employerTax).toString(),
-              pension: Math.round(pension).toString(),
             },
           },
         });
@@ -321,7 +300,7 @@ export function DancerChoreographerCalculator() {
         <div className='separator'></div>
         <div className='card-content result-grid'>
           {salary ? (
-            <div className='result-section'>
+            <section className='result-section'>
               {/* Primary Role Calculation */}
               <div>
                 <h3 className='result-subtitle'>
@@ -603,66 +582,6 @@ export function DancerChoreographerCalculator() {
 
               <div className='separator'></div>
 
-              {/* Social Costs */}
-              <div className='social-costs'>
-                <h3 className='result-subtitle'>Sosiale kostnader:</h3>
-                <p className='result-value'>
-                  {Number(salary.socialCostsTotal).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK
-                </p>
-                <ul className='social-costs-list'>
-                  <li className='social-costs-item'>
-                    Feriepenger (10,2%):
-                    <br />
-                    {Number(salary.combinedBaseSalary).toLocaleString('no-NO', {
-                      maximumFractionDigits: 0,
-                    })}{' '}
-                    NOK x 0,102 ={' '}
-                    {Number(
-                      salary.breakdown.socialCosts.holidayPay
-                    ).toLocaleString('no-NO', {
-                      maximumFractionDigits: 0,
-                    })}{' '}
-                    NOK
-                  </li>
-                  <li className='social-costs-item'>
-                    Arbeidsgiveravgift (14,1%):
-                    <br />
-                    {Number(salary.combinedBaseSalary).toLocaleString('no-NO', {
-                      maximumFractionDigits: 0,
-                    })}{' '}
-                    NOK x 0,141 ={' '}
-                    {Number(
-                      salary.breakdown.socialCosts.employerTax
-                    ).toLocaleString('no-NO', {
-                      maximumFractionDigits: 0,
-                    })}{' '}
-                    NOK
-                  </li>
-                  <li className='social-costs-item'>
-                    Pensjon (2%):
-                    <br />
-                    {Number(salary.combinedBaseSalary).toLocaleString('no-NO', {
-                      maximumFractionDigits: 0,
-                    })}{' '}
-                    NOK x 0,02 ={' '}
-                    {Number(
-                      salary.breakdown.socialCosts.pension
-                    ).toLocaleString('no-NO', {
-                      maximumFractionDigits: 0,
-                    })}{' '}
-                    NOK
-                  </li>
-                </ul>
-                <p className='result-explanation'>
-                  (Beregnet basert på den kombinerte grunnlønnen)
-                </p>
-              </div>
-
-              <div className='separator'></div>
-
               {/* Total Salary */}
               <div className='total-salary'>
                 <h3 className='result-subtitle'>Total lønn for prosjektet:</h3>
@@ -673,11 +592,10 @@ export function DancerChoreographerCalculator() {
                   NOK
                 </p>
                 <p className='result-explanation'>
-                  (Inkluderer kombinert grunnlønn for begge roller og alle
-                  sosiale kostnader)
+                  (Danser lønn + Koreograf lønn)
                 </p>
               </div>
-            </div>
+            </section>
           ) : (
             <p className='result-explanation'>
               Vennligst fyll ut alle feltene for å se beregnet lønn.
@@ -689,7 +607,7 @@ export function DancerChoreographerCalculator() {
         <button
           type='button'
           onClick={resetForm}
-          className='btn btn-secondary'
+          className='btn btn-primary'
           aria-label='Nullstill alle verdier'
         >
           Nullstill

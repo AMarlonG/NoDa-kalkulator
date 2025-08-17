@@ -300,7 +300,7 @@ export function TeacherCalculator() {
               {/* 2. Then show the calculations for the hourly rate + 36.8% markup */}
               <section className='result-section'>
                 <h3 className='result-subtitle'>
-                  Timesats med påslag (36,8%):
+                  Anbefalt timesats med påslag (36,8%):
                 </h3>
                 <p className='result-value'>
                   {Number(salary.selfEmployedHourlyRate).toLocaleString(
