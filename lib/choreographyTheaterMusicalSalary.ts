@@ -7,34 +7,34 @@ export const choreographyTheaterMusicalSalaryData: ChoreographyTheaterMusicalSal
   [
     {
       Ansiennitet: 0,
-      Lønn: '226 348',
+      Lønn: '238 118',
     },
     {
       Ansiennitet: 2,
-      Lønn: '233 244',
+      Lønn: '245 373',
     },
     {
       Ansiennitet: 4,
-      Lønn: '239 237',
+      Lønn: '251 677',
     },
     {
       Ansiennitet: 6,
-      Lønn: '244 454',
+      Lønn: '257 166',
     },
     {
       Ansiennitet: 8,
-      Lønn: '250 870',
+      Lønn: '263 915',
     },
     {
       Ansiennitet: 10,
-      Lønn: '257 850',
+      Lønn: '271 258',
     },
     {
       Ansiennitet: 12,
-      Lønn: '268 917',
+      Lønn: '282 901',
     },
     {
       Ansiennitet: 14,
-      Lønn: '290 495',
+      Lønn: '305 601',
     },
   ];
