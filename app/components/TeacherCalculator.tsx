@@ -194,12 +194,10 @@ export function TeacherCalculator() {
                 <p className='result-value'>
                   {formatNumber(salary.hourlyRate)} NOK
                 </p>
-                <p className='result-explanation'>
-                  Basert på {role} med {seniority} års ansiennitet
+                <p className='result-breakdown'>
+                  {role} med {seniority} års ansiennitet
                 </p>
               </section>
-
-              <div className='separator'></div>
 
               {/* 2. Weekly salary */}
               <section className='result-section'>
@@ -207,21 +205,19 @@ export function TeacherCalculator() {
                 <p className='result-value'>
                   {formatNumber(salary.weeklySalary)} NOK
                 </p>
-                <p className='result-explanation'>
-                  {formatNumber(salary.hourlyRate)} NOK × {weeklyHours} timer = {formatNumber(salary.weeklySalary)} NOK
+                <p className='result-breakdown'>
+                  {formatNumber(salary.hourlyRate)} NOK × {weeklyHours} timer
                 </p>
               </section>
-
-              <div className='separator'></div>
 
               {/* 3. Total salary for period */}
               <section className='result-section'>
                 <h3 className='result-subtitle'>Total lønn for perioden:</h3>
-                <p className='result-value'>
+                <p className='total-salary-value'>
                   {formatNumber(salary.totalSalary)} NOK
                 </p>
-                <p className='result-explanation'>
-                  {formatNumber(salary.weeklySalary)} NOK × {numberOfWeeks} uker = {formatNumber(salary.totalSalary)} NOK
+                <p className='result-breakdown'>
+                  {formatNumber(salary.weeklySalary)} NOK × {numberOfWeeks} uker
                 </p>
               </section>
 
@@ -232,7 +228,7 @@ export function TeacherCalculator() {
                   className='btn btn-secondary'
                   popoverTarget='selvstendig-info-teacher'
                 >
-                  Er dette et oppdrag?
+                  Selvstendig næringsdrivende?
                 </button>
               </div>
             </div>
@@ -250,7 +246,7 @@ export function TeacherCalculator() {
           className='btn btn-primary'
           aria-label='Nullstill alle verdier'
         >
-          Nullstill
+          Nullstill kalkulator
         </button>
       </div>
 

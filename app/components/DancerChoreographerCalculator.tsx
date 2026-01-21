@@ -338,104 +338,54 @@ export function DancerChoreographerCalculator() {
             <>
               {/* Verkssats Section */}
               <section className='result-section'>
-                <h3 className='result-subtitle'>Verkssats - Koreografisk verk</h3>
-                <p className='result-explanation'>
-                  Minuttsats: {formatNumber(salary.choreographerMinuteRate)} NOK
-                </p>
-                <p className='result-explanation'>
-                  Produksjonslengde: {productionLengthMinutes} minutter
-                </p>
-                <p className='result-explanation'>
-                  Beregning: {formatNumber(salary.choreographerMinuteRate)} NOK × {productionLengthMinutes} min
-                </p>
-                <p className='result-explanation'>(Alltid 100% - engangsbetaling)</p>
-                <p className='result-value'>
-                  Verkssats: {formatNumber(salary.verkssats)} NOK
+                <h3 className='result-subtitle'>Verkssats:</h3>
+                <p className='result-value'>{formatNumber(salary.verkssats)} NOK</p>
+                <p className='result-breakdown'>
+                  {formatNumber(salary.choreographerMinuteRate)} NOK/min × {productionLengthMinutes} min
+                  <br />Engangsbetaling for koreografisk verk
                 </p>
               </section>
-
-              <div className='separator'></div>
 
               {/* Production Period Section */}
               <section className='result-section'>
-                <h3 className='result-subtitle'>
-                  Innstuderingsperiode - {productionPeriodMonths} måneder
-                </h3>
-                <p className='result-explanation'>
-                  Danser månedssats: {formatNumber(salary.dancerMonthlyRate)} NOK
-                </p>
-                <p className='result-explanation'>
-                  Koreograf månedssats: {formatNumber(salary.choreographerMonthlyRate)} NOK
-                </p>
-                <div className='mt-4'>
-                  <p className='result-explanation'>
-                    Danser ({salary.productionPeriod.dancerPercent}%):{' '}
-                    {formatNumber(salary.dancerMonthlyRate)} × {productionPeriodMonths} × {salary.productionPeriod.dancerPercent / 100} ={' '}
-                    {formatNumber(salary.productionPeriod.dancerSalary)} NOK
-                  </p>
-                  <p className='result-explanation'>
-                    Koreograf ({salary.productionPeriod.choreographerPercent}%):{' '}
-                    {formatNumber(salary.choreographerMonthlyRate)} × {productionPeriodMonths} × {salary.productionPeriod.choreographerPercent / 100} ={' '}
-                    {formatNumber(salary.productionPeriod.choreographerSalary)} NOK
-                  </p>
-                </div>
-                <p className='result-value'>
-                  Sum periode: {formatNumber(salary.productionPeriod.periodTotal)} NOK
+                <h3 className='result-subtitle'>Innstuderingsperiode ({productionPeriodMonths} mnd):</h3>
+                <p className='result-value'>{formatNumber(salary.productionPeriod.periodTotal)} NOK</p>
+                <p className='result-breakdown'>
+                  Danser ({salary.productionPeriod.dancerPercent}%): {formatNumber(salary.productionPeriod.dancerSalary)} NOK
+                  <br />Koreograf ({salary.productionPeriod.choreographerPercent}%): {formatNumber(salary.productionPeriod.choreographerSalary)} NOK
                 </p>
               </section>
-
-              <div className='separator'></div>
 
               {/* Performance Period Section */}
               <section className='result-section'>
-                <h3 className='result-subtitle'>
-                  Forestillingsperiode - {performancePeriodMonths} måneder
-                </h3>
-                <p className='result-explanation'>
-                  (Koreografarbeid avsluttes ved forestillingsstart)
-                </p>
-                <div className='mt-4'>
-                  <p className='result-explanation'>
-                    Danser ({salary.performancePeriod.dancerPercent}%):{' '}
-                    {formatNumber(salary.dancerMonthlyRate)} × {performancePeriodMonths} × 1 ={' '}
-                    {formatNumber(salary.performancePeriod.dancerSalary)} NOK
-                  </p>
-                  <p className='result-explanation'>
-                    Koreograf (0%): 0 NOK
-                  </p>
-                </div>
-                <p className='result-value'>
-                  Sum periode: {formatNumber(salary.performancePeriod.periodTotal)} NOK
+                <h3 className='result-subtitle'>Forestillingsperiode ({performancePeriodMonths} mnd):</h3>
+                <p className='result-value'>{formatNumber(salary.performancePeriod.periodTotal)} NOK</p>
+                <p className='result-breakdown'>
+                  Danser ({salary.performancePeriod.dancerPercent}%): {formatNumber(salary.performancePeriod.dancerSalary)} NOK
+                  <br />Koreograf: Ikke aktiv i denne perioden
                 </p>
               </section>
-
-              <div className='separator'></div>
 
               {/* Totals Section */}
               <section className='result-section'>
-                <h3 className='result-subtitle'>Totalt</h3>
-                <p className='result-explanation'>
-                  Total danserlønn: {formatNumber(salary.totalDancerSalary)} NOK
+                <h3 className='result-subtitle'>Totalt:</h3>
+                <p className='total-salary-value'>{formatNumber(salary.grandTotal)} NOK</p>
+                <p className='result-breakdown'>
+                  Verkssats: {formatNumber(salary.verkssats)} NOK
+                  <br />Danser: {formatNumber(salary.totalDancerSalary)} NOK
+                  <br />Koreograf (innstudering): {formatNumber(salary.productionPeriod.choreographerSalary)} NOK
                 </p>
-                <p className='result-explanation'>
-                  Total koreograflønn (verkssats + innstudering): {formatNumber(salary.totalChoreographerSalary)} NOK
-                </p>
-                <div className='total-salary'>
-                  <p className='total-salary-value'>
-                    Samlet lønn: {formatNumber(salary.grandTotal)} NOK
-                  </p>
-                </div>
               </section>
 
-              <div className='separator'></div>
-
               {/* Royalties Section */}
-              <section className='result-section royalties-note'>
-                <h3 className='result-subtitle'>Royalties</h3>
-                <p className='royalties-text'>
+              <section className='result-section'>
+                <h3 className='result-subtitle'>Husk royalties!</h3>
+                <p className='result-explanation'>
                   I tillegg skal du, som koreograf, ha 6% av billettinntektene utbetalt som royalties.
                 </p>
               </section>
+
+              <div className='separator'></div>
             </>
           ) : (
             <p className='result-explanation'>
@@ -452,7 +402,7 @@ export function DancerChoreographerCalculator() {
           className='btn btn-primary'
           aria-label='Nullstill alle verdier'
         >
-          Nullstill
+          Nullstill kalkulator
         </button>
       </div>
     </form>

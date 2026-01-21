@@ -15,14 +15,24 @@
   }
 
   .result-explanation-list li {
-    margin-bottom: var(--size-2);
+    margin-bottom: var(--size-3);
+  }
+
+  /* ==========================================================================
+     Result Breakdown Text (simplified format with spacing)
+     ========================================================================== */
+  .result-breakdown {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin-top: var(--size-2);
   }
 
   /* ==========================================================================
      Clear Button Container
      ========================================================================== */
   .clear-button-container {
-    text-align: center;
+    display: flex;
+    justify-content: center;
     margin-top: var(--size-6);
   }
 
@@ -30,7 +40,7 @@
      Radio Options
      ========================================================================== */
   .radio-option {
-    margin-bottom: var(--size-2);
+    margin-bottom: var(--size-3);
     display: flex;
     align-items: center;
   }
@@ -48,9 +58,10 @@
 
   .calculator-intro-text {
     font-size: var(--text-base);
+    font-weight: 500;
     color: var(--color-text-muted);
-    font-style: italic;
-    text-align: center;
+    border-left: 3px solid var(--color-border-muted);
+    padding-left: var(--size-4);
     margin-bottom: var(--size-4);
   }
 
@@ -63,17 +74,18 @@
   }
 
   .calculator-intro-list li {
-    margin-bottom: var(--size-2);
+    margin-bottom: var(--size-3);
   }
 
   /* ==========================================================================
      Popover Component
      ========================================================================== */
   .popover-trigger-container {
-    margin-top: var(--size-6);
-    padding-top: var(--size-4);
+    display: flex;
+    justify-content: center;
+    margin-top: var(--size-8);
+    padding-top: var(--size-8);
     border-top: 1px solid var(--color-border);
-    text-align: center;
   }
 
   .popover {
@@ -117,7 +129,7 @@
     font-weight: 600;
     color: var(--color-text);
     margin-top: var(--size-4);
-    margin-bottom: var(--size-2);
+    margin-bottom: var(--size-3);
   }
 
   .popover-rate {
@@ -137,7 +149,7 @@
   .rate-row {
     display: flex;
     justify-content: space-between;
-    padding: var(--size-2) 0;
+    padding: var(--size-3) 0;
     font-size: var(--text-sm);
     color: var(--color-text-muted);
   }
@@ -160,7 +172,7 @@
   }
 
   .popover-list li {
-    margin-bottom: var(--size-2);
+    margin-bottom: var(--size-3);
   }
 
   .popover-close {
@@ -168,19 +180,4 @@
     margin-top: var(--size-4);
   }
 
-  /* ==========================================================================
-     Royalties Note
-     ========================================================================== */
-  .royalties-note {
-    padding: var(--size-4);
-    margin-top: var(--size-4);
-  }
-
-  .royalties-text {
-    font-size: var(--text-base);
-    font-weight: 500;
-    color: var(--color-text);
-    line-height: 1.6;
-    margin: 0;
-  }
 }

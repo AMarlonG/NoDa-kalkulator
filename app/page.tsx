@@ -66,11 +66,7 @@ export default function Home() {
     <main className='main'>
       <header className='header'>
         <div className='title-container'>
-          <h1
-            className='title'
-            onClick={() => updateActiveCalculatorWithTransition(null)}
-            style={{ cursor: 'pointer' }}
-          >
+          <h1 className='title'>
             NoDas lønnskalkulator
           </h1>
           <p className='description'>Finn din lønn basert på gjeldende avtaler</p>

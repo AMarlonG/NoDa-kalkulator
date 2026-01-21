@@ -21,6 +21,7 @@
   .header {
     width: 100%;
     max-width: 36rem;
+    margin-top: calc(var(--size-16) + var(--size-8));
     margin-bottom: var(--size-12);
   }
 
@@ -29,12 +30,12 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: var(--size-8);
+    margin-bottom: calc(var(--size-16) + var(--size-4));
   }
 
   /* Override base title styles for page title */
   .main .title {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: var(--text-2xl);
     font-weight: 700;
     color: var(--color-primary);
     margin-bottom: var(--size-4);
@@ -42,7 +43,7 @@
 
   /* Override base description styles for page description */
   .main .description {
-    font-size: clamp(1rem, 3vw, 1.25rem);
+    font-size: var(--text-lg);
     color: var(--color-text-muted);
     margin-bottom: 0;
   }
@@ -55,18 +56,18 @@
     max-width: 36rem;
     display: flex;
     flex-direction: column;
-    gap: clamp(0.5rem, 2vw, 1rem);
+    gap: clamp(0.75rem, 2vw, 1.25rem);
   }
 
   .nav-row {
     display: flex;
-    gap: clamp(0.5rem, 2vw, 1rem);
+    gap: clamp(0.75rem, 2vw, 1.25rem);
     width: 100%;
   }
 
   .nav-button {
     flex: 1;
-    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    padding: clamp(0.75rem, 2vw, 1rem);
     border-radius: var(--radius);
     font-weight: 600;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;

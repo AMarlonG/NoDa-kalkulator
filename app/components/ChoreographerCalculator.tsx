@@ -206,45 +206,35 @@ export function ChoreographerCalculator() {
                   {salary.totalSalary ? (
                     <>
                       <section className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Lønn for koreografi:
-                        </h3>
+                        <h3 className='result-subtitle'>Verkssats:</h3>
                         <p className='result-value'>
                           {salary.productionSalary} NOK
                         </p>
-                        <p className='result-explanation'>
-                          (Minuttsats {salary.minuteRate} NOK x{' '}
-                          {productionLength} minutter)
+                        <p className='result-breakdown'>
+                          {salary.minuteRate} NOK/min × {productionLength} min
                         </p>
                       </section>
                       <section className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Lønn for innstudering:
-                        </h3>
+                        <h3 className='result-subtitle'>Lønn for innstudering:</h3>
                         <p className='result-value'>
                           {salary.rehearsalSalary} NOK
                         </p>
-                        <p className='result-explanation'>
-                          (Månedssats {salary.monthlyRate} NOK x{' '}
-                          {rehearsalMonths} måneder)
+                        <p className='result-breakdown'>
+                          {salary.monthlyRate} NOK/mnd × {rehearsalMonths} mnd
                         </p>
                       </section>
-                      <div className='separator'></div>
-                      <section className='result-section total-salary'>
-                        <h3 className='result-subtitle'>
-                          Total lønn for produksjonen:
-                        </h3>
+                      <section className='result-section'>
+                        <h3 className='result-subtitle'>Total lønn for produksjonen:</h3>
                         <p className='total-salary-value'>
                           {salary.totalSalary} NOK
                         </p>
-                        <p className='result-explanation'>
-                          (Lønn for koreografi + Lønn for innstudering)
+                        <p className='result-breakdown'>
+                          Verkssats + innstudering
                         </p>
                       </section>
-                      <div className='separator'></div>
-                      <section className='result-section royalties-note'>
-                        <h3 className='result-subtitle'>Royalties</h3>
-                        <p className='royalties-text'>
+                      <section className='result-section'>
+                        <h3 className='result-subtitle'>Husk royalties!</h3>
+                        <p className='result-explanation'>
                           I tillegg skal du, som koreograf, ha 6% av billettinntektene utbetalt som royalties.
                         </p>
                       </section>
@@ -259,7 +249,7 @@ export function ChoreographerCalculator() {
               ) : workType === 'theater' && salary.annualSalary ? (
                 <section className='result-section'>
                   <h3 className='result-subtitle'>Produksjonslønn:</h3>
-                  <p className='result-value'>{salary.annualSalary} NOK</p>
+                  <p className='total-salary-value'>{salary.annualSalary} NOK</p>
                 </section>
               ) : (
                 <p className='result-explanation'>
@@ -274,7 +264,7 @@ export function ChoreographerCalculator() {
                   className='btn btn-secondary'
                   popoverTarget='selvstendig-info-choreographer'
                 >
-                  Er dette et oppdrag?
+                  Selvstendig næringsdrivende?
                 </button>
               </div>
             </div>
@@ -292,7 +282,7 @@ export function ChoreographerCalculator() {
           className='btn btn-primary'
           aria-label='Nullstill alle verdier'
         >
-          Nullstill
+          Nullstill kalkulator
         </button>
       </div>
 

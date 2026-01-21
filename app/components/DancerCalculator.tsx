@@ -153,38 +153,28 @@ export function DancerCalculator() {
                       <h3 className='result-subtitle'>
                         Årslønn (fast ansettelse):
                       </h3>
-                      <p className='result-value'>
+                      <p className='total-salary-value'>
                         {formatNumber(parseNorwegianNumber(salary.annualSalary))} NOK
                       </p>
                     </section>
                   ) : employmentType === 'project' && salary.projectSalary ? (
                     <>
                       <section className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Årslønn (grunnlag for beregning):
-                        </h3>
-                        <p className='result-value'>
-                          {formatNumber(parseNorwegianNumber(salary.annualSalary))} NOK
-                        </p>
-                      </section>
-                      <section className='result-section'>
                         <h3 className='result-subtitle'>Månedssats:</h3>
                         <p className='result-value'>
                           {formatNumber(Number(salary.monthlyRate))} NOK
                         </p>
-                        <p className='result-explanation'>
-                          (Årslønn {formatNumber(parseNorwegianNumber(salary.annualSalary))} NOK / 12 måneder)
+                        <p className='result-breakdown'>
+                          Årslønn {formatNumber(parseNorwegianNumber(salary.annualSalary))} NOK / 12 mnd
                         </p>
                       </section>
                       <section className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Lønn for engasjementet:
-                        </h3>
-                        <p className='result-value'>
+                        <h3 className='result-subtitle'>Lønn for engasjementet:</h3>
+                        <p className='total-salary-value'>
                           {formatNumber(Number(salary.projectSalary))} NOK
                         </p>
-                        <p className='result-explanation'>
-                          (Månedssats {formatNumber(Number(salary.monthlyRate))} NOK x {projectMonths} måneder)
+                        <p className='result-breakdown'>
+                          {formatNumber(Number(salary.monthlyRate))} NOK × {projectMonths} mnd
                         </p>
                       </section>
                     </>
@@ -201,7 +191,7 @@ export function DancerCalculator() {
                       className='btn btn-secondary'
                       popoverTarget='selvstendig-info-dancer'
                     >
-                      Er dette et oppdrag?
+                      Selvstendig næringsdrivende?
                     </button>
                   </div>
                 </div>
@@ -221,7 +211,7 @@ export function DancerCalculator() {
           className='btn btn-primary'
           aria-label='Nullstill alle verdier'
         >
-          Nullstill
+          Nullstill kalkulator
         </button>
       </div>
 
