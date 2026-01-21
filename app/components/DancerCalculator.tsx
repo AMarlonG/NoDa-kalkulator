@@ -2,29 +2,36 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { dancersSalaryData } from '@/lib/dancersSalary';
-import '../styles/base.css';
-import '../styles/calculator-common.css';
 
 export function DancerCalculator() {
   const [seniority, setSeniority] = useState('');
   const [employmentType, setEmploymentType] = useState('');
-  const [projectDays, setProjectDays] = useState('');
-  const [projectHours, setProjectHours] = useState('');
+  const [projectMonths, setProjectMonths] = useState('');
   const [salary, setSalary] = useState<{
     annualSalary: string;
-    dailyRate?: string;
-    hourlyRate?: string;
-    selfEmployedHourlyRate?: string;
+    monthlyRate?: string;
     projectSalary?: string;
-    totalHourlyFee?: string;
   } | null>(null);
 
   const resetForm = () => {
     setSeniority('');
     setEmploymentType('');
-    setProjectDays('');
-    setProjectHours('');
+    setProjectMonths('');
     setSalary(null);
+  };
+
+  // Calculate self-employed rate based on annual salary
+  const getSelfEmployedRates = () => {
+    if (!salary) return null;
+    const annualSalary = Number(salary.annualSalary.replace(/\s/g, ''));
+    const baseHourlyRate = annualSalary / 1750;
+    const markup = baseHourlyRate * 0.368;
+    const totalRate = baseHourlyRate + markup;
+    return {
+      baseRate: Math.round(baseHourlyRate),
+      markup: Math.round(markup),
+      totalRate: Math.round(totalRate),
+    };
   };
 
   const calculateSalary = useCallback(() => {
@@ -37,40 +44,16 @@ export function DancerCalculator() {
           setSalary({
             annualSalary: selectedData['Årslønn fast ansettelse'],
           });
-        } else if (employmentType === 'selfEmployed' && projectHours) {
+        } else if (employmentType === 'project' && projectMonths) {
           const annualSalary = Number(
             selectedData['Årslønn prosjekt'].replace(/\s/g, '')
           );
-          // Calculate hourly rate based on 1750 working hours per year
-          const hourlyRate = annualSalary / 1750;
-          // Calculate self-employed hourly rate with 36.8% additional costs
-          const selfEmployedHourlyRate = hourlyRate * 1.368;
-
-          let totalHourlyFee;
-          if (projectHours && Number(projectHours) > 0) {
-            totalHourlyFee = selfEmployedHourlyRate * Number(projectHours);
-          }
+          const monthlyRate = annualSalary / 12;
+          const projectSalary = monthlyRate * Number(projectMonths);
 
           setSalary({
             annualSalary: selectedData['Årslønn prosjekt'],
-            hourlyRate: Math.round(hourlyRate).toString(),
-            selfEmployedHourlyRate: Math.round(
-              selfEmployedHourlyRate
-            ).toString(),
-            totalHourlyFee: totalHourlyFee
-              ? Math.round(totalHourlyFee).toString()
-              : undefined,
-          });
-        } else if (employmentType === 'project' && projectDays) {
-          const annualSalary = Number(
-            selectedData['Årslønn prosjekt'].replace(/\s/g, '')
-          );
-          const dailyRate = annualSalary / 229;
-          const projectSalary = dailyRate * Number(projectDays);
-
-          setSalary({
-            annualSalary: selectedData['Årslønn prosjekt'],
-            dailyRate: Math.round(dailyRate).toString(),
+            monthlyRate: Math.round(monthlyRate).toString(),
             projectSalary: Math.round(projectSalary).toString(),
           });
         } else {
@@ -80,7 +63,7 @@ export function DancerCalculator() {
     } else {
       setSalary(null);
     }
-  }, [seniority, employmentType, projectDays, projectHours]);
+  }, [seniority, employmentType, projectMonths]);
 
   useEffect(() => {
     calculateSalary();
@@ -126,57 +109,33 @@ export function DancerCalculator() {
               value={employmentType}
               onChange={(e) => {
                 setEmploymentType(e.target.value);
-                setProjectDays('');
-                setProjectHours('');
+                setProjectMonths('');
               }}
             >
               <option value=''>Velg ansettelsestype</option>
               <option value='permanent'>Fast ansettelse</option>
               <option value='project'>Midlertidig ansettelse</option>
-              <option value='selfEmployed'>Selvstendig næringsdrivende</option>
             </select>
           </div>
 
           {employmentType === 'project' && (
             <div className='input-group'>
-              <label htmlFor='projectDays' className='label'>
-                Antall arbeidsdager for prosjektet
+              <label htmlFor='projectMonths' className='label'>
+                Antall måneder for engasjementet
               </label>
               <input
                 type='number'
-                id='projectDays'
+                id='projectMonths'
                 className='input'
-                value={projectDays}
+                value={projectMonths}
                 onChange={(e) => {
                   const value = e.target.value;
                   if (value === '' || /^[0-9\b]+$/.test(value)) {
-                    setProjectDays(value);
+                    setProjectMonths(value);
                   }
                 }}
                 min='1'
-                placeholder='Antall dager'
-              />
-            </div>
-          )}
-
-          {employmentType === 'selfEmployed' && (
-            <div className='input-group'>
-              <label htmlFor='projectHours' className='label'>
-                Antall timer
-              </label>
-              <input
-                type='number'
-                id='projectHours'
-                className='input'
-                value={projectHours}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === '' || /^[0-9\b]+$/.test(value)) {
-                    setProjectHours(value);
-                  }
-                }}
-                min='1'
-                placeholder='Antall timer'
+                placeholder='Antall måneder'
               />
             </div>
           )}
@@ -209,85 +168,6 @@ export function DancerCalculator() {
                         NOK
                       </p>
                     </section>
-                  ) : employmentType === 'selfEmployed' && projectHours ? (
-                    <>
-                      <section className='result-section'>
-                        <h3 className='result-subtitle'>
-                          Timesats basert på årslønn:
-                        </h3>
-                        <p className='result-value'>
-                          {Number(salary.hourlyRate).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
-                        </p>
-                        <p className='result-explanation'>
-                          (Årslønn / 1750 arbeidstimer)
-                        </p>
-                        <p className='result-explanation mt-2'>
-                          <strong>Grunnlag for beregning:</strong> Årslønn{' '}
-                          {Number(
-                            salary.annualSalary.replace(/\s/g, '')
-                          ).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
-                        </p>
-
-                        <div className='separator'></div>
-
-                        <h3 className='result-subtitle'>
-                          Anbefalt timesats med påslag (36,8%):
-                        </h3>
-                        <p className='result-value'>
-                          {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                            'no-NO',
-                            { maximumFractionDigits: 0 }
-                          )}{' '}
-                          NOK
-                        </p>
-                        <p className='result-explanation'>
-                          Påslaget på 36,8% dekker utgifter til ditt firma, som
-                          følgende:
-                        </p>
-                        <ul className='result-explanation-list'>
-                          <li>
-                            15,8% - Kompensasjon for arbeidsgiveravgift og tap
-                            av rettigheter i folketrygdloven
-                          </li>
-                          <li>12,0% - Kompensasjon for feriepenger</li>
-                          <li>
-                            3,6% - Trygdeavgiftsforhøyelse for næringsdrivende
-                          </li>
-                          <li>0,4% - Frivillig yrkesskadeforsikring</li>
-                          <li>
-                            5,0% - Administrative kostnader for
-                            næringsvirksomhet
-                          </li>
-                        </ul>
-
-                        <div className='separator'></div>
-
-                        <h3 className='result-subtitle'>Total honorar:</h3>
-                        <p className='result-value'>
-                          {Number(salary.totalHourlyFee).toLocaleString(
-                            'no-NO',
-                            { maximumFractionDigits: 0 }
-                          )}{' '}
-                          NOK
-                        </p>
-                        <p className='result-explanation'>
-                          (Timesats{' '}
-                          {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                            'no-NO',
-                            {
-                              maximumFractionDigits: 0,
-                            }
-                          )}{' '}
-                          NOK × {projectHours} timer)
-                        </p>
-                      </section>
-                    </>
                   ) : employmentType === 'project' && salary.projectSalary ? (
                     <>
                       <section className='result-section'>
@@ -304,9 +184,9 @@ export function DancerCalculator() {
                         </p>
                       </section>
                       <section className='result-section'>
-                        <h3 className='result-subtitle'>Dagsats:</h3>
+                        <h3 className='result-subtitle'>Månedssats:</h3>
                         <p className='result-value'>
-                          {Number(salary.dailyRate).toLocaleString('no-NO', {
+                          {Number(salary.monthlyRate).toLocaleString('no-NO', {
                             maximumFractionDigits: 0,
                           })}{' '}
                           NOK
@@ -318,12 +198,12 @@ export function DancerCalculator() {
                           ).toLocaleString('no-NO', {
                             maximumFractionDigits: 0,
                           })}{' '}
-                          NOK / 229 arbeidsdager)
+                          NOK / 12 måneder)
                         </p>
                       </section>
                       <section className='result-section'>
                         <h3 className='result-subtitle'>
-                          Lønn for prosjektet:
+                          Lønn for engasjementet:
                         </h3>
                         <p className='result-value'>
                           {Number(salary.projectSalary).toLocaleString('no-NO', {
@@ -332,11 +212,11 @@ export function DancerCalculator() {
                           NOK
                         </p>
                         <p className='result-explanation'>
-                          (Dagsats{' '}
-                          {Number(salary.dailyRate).toLocaleString('no-NO', {
+                          (Månedssats{' '}
+                          {Number(salary.monthlyRate).toLocaleString('no-NO', {
                             maximumFractionDigits: 0,
                           })}{' '}
-                          NOK x {projectDays} dager)
+                          NOK x {projectMonths} måneder)
                         </p>
                       </section>
                     </>
@@ -345,6 +225,17 @@ export function DancerCalculator() {
                       Vennligst fyll ut alle feltene for å se beregnet lønn.
                     </p>
                   )}
+
+                  {/* Self-employed popover button */}
+                  <div className='popover-trigger-container'>
+                    <button
+                      type='button'
+                      className='btn btn-secondary'
+                      popoverTarget='selvstendig-info-dancer'
+                    >
+                      Er dette et oppdrag?
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <p className='result-explanation'>
@@ -364,6 +255,67 @@ export function DancerCalculator() {
         >
           Nullstill
         </button>
+      </div>
+
+      {/* Self-employed popover */}
+      <div id='selvstendig-info-dancer' popover='auto' className='popover'>
+        <div className='popover-content'>
+          <h3 className='popover-title'>
+            Er dette et oppdrag eller en ansettelse?
+          </h3>
+
+          <p className='popover-text'>
+            Jobb som danser, koreograf eller pedagog er i de fleste tilfeller å
+            anse som et arbeidsforhold i følge Arbeidsmiljøloven §1.8.
+          </p>
+
+          <p className='popover-text'>
+            Dersom arbeidet ikke treffer spesifiseringen i denne paragrafen kan
+            du ta jobben som et oppdrag. Vi anbefaler da at du legger på 36,8%
+            for å dekke dine kostnader med å drive eget firma og besørge egne
+            sosiale kostnader.
+          </p>
+
+          {salary && getSelfEmployedRates() && (
+            <>
+              <h4 className='popover-subtitle'>
+                Din timesats som selvstendig næringsdrivende:
+              </h4>
+              <div className='popover-rate-breakdown'>
+                <div className='rate-row'>
+                  <span>Timesats (grunnlag):</span>
+                  <span>{getSelfEmployedRates()?.baseRate.toLocaleString('no-NO')} NOK</span>
+                </div>
+                <div className='rate-row'>
+                  <span>+ 36,8% påslag:</span>
+                  <span>{getSelfEmployedRates()?.markup.toLocaleString('no-NO')} NOK</span>
+                </div>
+                <div className='rate-row rate-total'>
+                  <span>Timesats med påslag:</span>
+                  <span>{getSelfEmployedRates()?.totalRate.toLocaleString('no-NO')} NOK</span>
+                </div>
+              </div>
+            </>
+          )}
+
+          <h4 className='popover-subtitle'>Påslaget dekker:</h4>
+          <ul className='popover-list'>
+            <li>15,8% - Arbeidsgiveravgift og tap av rettigheter</li>
+            <li>12,0% - Feriepenger</li>
+            <li>3,6% - Trygdeavgiftsforhøyelse</li>
+            <li>0,4% - Frivillig yrkesskadeforsikring</li>
+            <li>5,0% - Administrative kostnader</li>
+          </ul>
+
+          <button
+            type='button'
+            className='btn btn-primary popover-close'
+            popoverTarget='selvstendig-info-dancer'
+            popoverTargetAction='hide'
+          >
+            Lukk
+          </button>
+        </div>
       </div>
     </form>
   );
