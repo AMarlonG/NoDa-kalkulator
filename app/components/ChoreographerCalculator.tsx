@@ -155,7 +155,7 @@ export function ChoreographerCalculator() {
               }}
             >
               <option value=''>Velg arbeidstype</option>
-              <option value='project'>Enkeltstående produksjon</option>
+              <option value='project'>Produksjon for dansekompani</option>
               <option value='theater'>For teater eller musikal</option>
             </select>
           </div>
@@ -256,6 +256,13 @@ export function ChoreographerCalculator() {
                           (Lønn for koreografi + Lønn for innstudering)
                         </p>
                       </section>
+                      <div className='separator'></div>
+                      <section className='result-section royalties-note'>
+                        <h3 className='result-subtitle'>Royalties</h3>
+                        <p className='royalties-text'>
+                          I tillegg skal du, som koreograf, ha 6% av billettinntektene utbetalt som royalties.
+                        </p>
+                      </section>
                     </>
                   ) : (
                     <p className='result-explanation'>
@@ -266,7 +273,7 @@ export function ChoreographerCalculator() {
                 </>
               ) : workType === 'theater' && salary.annualSalary ? (
                 <section className='result-section'>
-                  <h3 className='result-subtitle'>Årslønn:</h3>
+                  <h3 className='result-subtitle'>Produksjonslønn:</h3>
                   <p className='result-value'>{salary.annualSalary} NOK</p>
                 </section>
               ) : (

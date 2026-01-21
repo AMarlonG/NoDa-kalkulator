@@ -163,3 +163,17 @@
 .btn-secondary:hover {
   background-color: var(--accent);
 }
+
+/* Royalties note styling */
+.royalties-note {
+  padding: var(--spacing-4);
+  margin-top: var(--spacing-4);
+}
+
+.royalties-text {
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--foreground);
+  line-height: 1.6;
+  margin: 0;
+}
