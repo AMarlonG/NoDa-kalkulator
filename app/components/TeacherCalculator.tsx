@@ -22,9 +22,6 @@ export function TeacherCalculator() {
     classMultiplier: number;
     baseSalaryPerClass: string;
     totalBaseSalary: string;
-    selfEmployedHourlyRate: string;
-    selfEmployedRatePerClass: string;
-    totalSelfEmployedFee: string;
   } | null>(null);
 
   // Filter seniority options based on selected role
@@ -68,21 +65,11 @@ export function TeacherCalculator() {
         const numClasses = Number(numberOfClasses) || 1;
         const totalBaseSalary = baseSalaryPerClass * numClasses;
 
-        // Calculate self-employed hourly rate with 36.8% additional costs
-        const selfEmployedHourlyRate = hourlyRate * 1.368;
-        const selfEmployedRatePerClass = selfEmployedHourlyRate * multiplier;
-        const totalSelfEmployedFee = selfEmployedRatePerClass * numClasses;
-
         setSalary({
           hourlyRate: hourlyRate.toString(),
-          selfEmployedHourlyRate: Math.round(selfEmployedHourlyRate).toString(),
           classMultiplier: multiplier,
           baseSalaryPerClass: Math.round(baseSalaryPerClass).toString(),
           totalBaseSalary: Math.round(totalBaseSalary).toString(),
-          selfEmployedRatePerClass: Math.round(
-            selfEmployedRatePerClass
-          ).toString(),
-          totalSelfEmployedFee: Math.round(totalSelfEmployedFee).toString(),
         });
       }
     } else {
@@ -100,13 +87,27 @@ export function TeacherCalculator() {
     setSalary(null);
   };
 
+  // Calculate self-employed rate based on hourly rate
+  const getSelfEmployedRates = () => {
+    if (!salary) return null;
+    const baseRate = Number(salary.hourlyRate);
+    const markup = baseRate * 0.368;
+    const totalRate = baseRate + markup;
+    return {
+      baseRate: Math.round(baseRate),
+      markup: Math.round(markup),
+      totalRate: Math.round(totalRate),
+    };
+  };
+
   return (
     <form className='form calculator-content'>
       <div className='calculator-intro'>
         <p className='calculator-intro-text'>
-          Denne utregningen gjelder for kortere engasjement ved private
-          danseskoler, og kun til forberedelse og undervisning av klasser. Møter
-          og forestillinger er ikke inkludert.
+          Denne beregningen gjelder for pedagoger som ikke har en fast ansettelse ved skolene, men ansettes i midlertidig stilling.
+        </p>
+        <p className='calculator-intro-text'>
+          Møter og forestillinger er ikke inkludert i denne utregningen. Les arbeidsavtalen din om hvordan arbeid utover selve undervisningen lønnes.
         </p>
         <ul className='calculator-intro-list'>
           <li>
@@ -295,96 +296,43 @@ export function TeacherCalculator() {
                 </p>
               </section>
 
-              <div className='separator'></div>
-
-              {/* 2. Then show the calculations for the hourly rate + 36.8% markup */}
-              <section className='result-section'>
-                <h3 className='result-subtitle'>
-                  Anbefalt timesats med påslag (36,8%):
-                </h3>
-                <p className='result-value'>
-                  {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                    'no-NO',
-                    { maximumFractionDigits: 0 }
-                  )}{' '}
-                  NOK
-                </p>
-                <p className='result-explanation'>
-                  {Number(salary.hourlyRate).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK × 1,368 ={' '}
-                  {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                    'no-NO',
-                    { maximumFractionDigits: 0 }
-                  )}{' '}
-                  NOK
-                </p>
-                <p className='result-explanation'>
-                  For {classDuration} minutter:{' '}
-                  {Number(salary.selfEmployedHourlyRate).toLocaleString(
-                    'no-NO',
-                    { maximumFractionDigits: 0 }
-                  )}{' '}
-                  NOK × {salary.classMultiplier} ={' '}
-                  {Number(salary.selfEmployedRatePerClass).toLocaleString(
-                    'no-NO',
-                    { maximumFractionDigits: 0 }
-                  )}{' '}
-                  NOK
-                </p>
-                <p className='result-explanation mt-2'>
-                  Påslaget på 36,8% dekker utgifter til ditt firma, som
-                  følgende:
-                </p>
-                <ul className='result-explanation-list'>
-                  <li className='social-costs-item'>
-                    15,8% - Kompensasjon for arbeidsgiveravgift og tap av
-                    rettigheter i folketrygdloven
-                  </li>
-                  <li className='social-costs-item'>
-                    12,0% - Kompensasjon for feriepenger
-                  </li>
-                  <li className='social-costs-item'>
-                    3,6% - Trygdeavgiftsforhøyelse for næringsdrivende
-                  </li>
-                  <li className='social-costs-item'>
-                    0,4% - Frivillig yrkesskadeforsikring
-                  </li>
-                  <li className='social-costs-item'>
-                    5,0% - Administrative kostnader for næringsvirksomhet
-                  </li>
-                </ul>
-              </section>
-
-              {/* 3. Then show the total fee */}
+              {/* 2. Show total salary for multiple classes */}
               {classCount === 'multiple' && (
                 <>
                   <div className='separator'></div>
                   <section className='result-section'>
-                    <h3 className='result-subtitle'>Totalt honorar:</h3>
+                    <h3 className='result-subtitle'>Total lønn:</h3>
                     <p className='result-value'>
-                      {Number(salary.totalSelfEmployedFee).toLocaleString(
-                        'no-NO',
-                        { maximumFractionDigits: 0 }
-                      )}{' '}
+                      {Number(salary.totalBaseSalary).toLocaleString('no-NO', {
+                        maximumFractionDigits: 0,
+                      })}{' '}
                       NOK
                     </p>
                     <p className='result-explanation'>
-                      {Number(salary.selfEmployedRatePerClass).toLocaleString(
+                      {Number(salary.baseSalaryPerClass).toLocaleString(
                         'no-NO',
                         { maximumFractionDigits: 0 }
                       )}{' '}
                       NOK × {numberOfClasses} klasser ={' '}
-                      {Number(salary.totalSelfEmployedFee).toLocaleString(
-                        'no-NO',
-                        { maximumFractionDigits: 0 }
-                      )}{' '}
+                      {Number(salary.totalBaseSalary).toLocaleString('no-NO', {
+                        maximumFractionDigits: 0,
+                      })}{' '}
                       NOK
                     </p>
                   </section>
                 </>
               )}
+
+              {/* Self-employed popover button */}
+              <div className='popover-trigger-container'>
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  popoverTarget='selvstendig-info-teacher'
+                >
+                  Er dette et oppdrag?
+                </button>
+              </div>
             </div>
           ) : (
             <p className='result-explanation'>
@@ -402,6 +350,75 @@ export function TeacherCalculator() {
         >
           Nullstill
         </button>
+      </div>
+
+      {/* Self-employed popover */}
+      <div id='selvstendig-info-teacher' popover='auto' className='popover'>
+        <div className='popover-content'>
+          <h3 className='popover-title'>
+            Er dette et oppdrag eller en ansettelse?
+          </h3>
+
+          <p className='popover-text'>
+            Jobb som danser, koreograf eller pedagog er i de fleste tilfeller å
+            anse som et arbeidsforhold i følge Arbeidsmiljøloven §1.8.
+          </p>
+
+          <p className='popover-text'>
+            Dersom arbeidet ikke treffer spesifiseringen i denne paragrafen kan
+            du ta jobben som et oppdrag. Vi anbefaler da at du legger på 36,8%
+            for å dekke dine kostnader med å drive eget firma og besørge egne
+            sosiale kostnader.
+          </p>
+
+          {salary && getSelfEmployedRates() && (
+            <>
+              <h4 className='popover-subtitle'>
+                Din timesats som selvstendig næringsdrivende:
+              </h4>
+              <div className='popover-rate-breakdown'>
+                <div className='rate-row'>
+                  <span>Timesats (grunnlag):</span>
+                  <span>
+                    {getSelfEmployedRates()?.baseRate.toLocaleString('no-NO')}{' '}
+                    NOK
+                  </span>
+                </div>
+                <div className='rate-row'>
+                  <span>+ 36,8% påslag:</span>
+                  <span>
+                    {getSelfEmployedRates()?.markup.toLocaleString('no-NO')} NOK
+                  </span>
+                </div>
+                <div className='rate-row rate-total'>
+                  <span>Timesats med påslag:</span>
+                  <span>
+                    {getSelfEmployedRates()?.totalRate.toLocaleString('no-NO')}{' '}
+                    NOK
+                  </span>
+                </div>
+              </div>
+            </>
+          )}
+
+          <h4 className='popover-subtitle'>Påslaget dekker:</h4>
+          <ul className='popover-list'>
+            <li>15,8% - Arbeidsgiveravgift og tap av rettigheter</li>
+            <li>12,0% - Feriepenger</li>
+            <li>3,6% - Trygdeavgiftsforhøyelse</li>
+            <li>0,4% - Frivillig yrkesskadeforsikring</li>
+            <li>5,0% - Administrative kostnader</li>
+          </ul>
+
+          <button
+            type='button'
+            className='btn btn-primary popover-close'
+            popoverTarget='selvstendig-info-teacher'
+            popoverTargetAction='hide'
+          >
+            Lukk
+          </button>
+        </div>
       </div>
     </form>
   );
