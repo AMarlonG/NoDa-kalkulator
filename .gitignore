@@ -42,3 +42,7 @@ coverage/
 
 # macOS
 .DS_Store
+
+# Claude Code
+.claude/plans/
+.claude/settings.json
