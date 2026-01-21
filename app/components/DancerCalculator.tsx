@@ -8,17 +8,17 @@ import '../styles/calculator-common.css';
 export function DancerCalculator() {
   const [seniority, setSeniority] = useState('');
   const [employmentType, setEmploymentType] = useState('');
-  const [projectDays, setProjectDays] = useState('');
+  const [projectMonths, setProjectMonths] = useState('');
   const [salary, setSalary] = useState<{
     annualSalary: string;
-    dailyRate?: string;
+    monthlyRate?: string;
     projectSalary?: string;
   } | null>(null);
 
   const resetForm = () => {
     setSeniority('');
     setEmploymentType('');
-    setProjectDays('');
+    setProjectMonths('');
     setSalary(null);
   };
 
@@ -46,16 +46,16 @@ export function DancerCalculator() {
           setSalary({
             annualSalary: selectedData['Årslønn fast ansettelse'],
           });
-        } else if (employmentType === 'project' && projectDays) {
+        } else if (employmentType === 'project' && projectMonths) {
           const annualSalary = Number(
             selectedData['Årslønn prosjekt'].replace(/\s/g, '')
           );
-          const dailyRate = annualSalary / 229;
-          const projectSalary = dailyRate * Number(projectDays);
+          const monthlyRate = annualSalary / 12;
+          const projectSalary = monthlyRate * Number(projectMonths);
 
           setSalary({
             annualSalary: selectedData['Årslønn prosjekt'],
-            dailyRate: Math.round(dailyRate).toString(),
+            monthlyRate: Math.round(monthlyRate).toString(),
             projectSalary: Math.round(projectSalary).toString(),
           });
         } else {
@@ -65,7 +65,7 @@ export function DancerCalculator() {
     } else {
       setSalary(null);
     }
-  }, [seniority, employmentType, projectDays]);
+  }, [seniority, employmentType, projectMonths]);
 
   useEffect(() => {
     calculateSalary();
@@ -111,7 +111,7 @@ export function DancerCalculator() {
               value={employmentType}
               onChange={(e) => {
                 setEmploymentType(e.target.value);
-                setProjectDays('');
+                setProjectMonths('');
               }}
             >
               <option value=''>Velg ansettelsestype</option>
@@ -122,22 +122,22 @@ export function DancerCalculator() {
 
           {employmentType === 'project' && (
             <div className='input-group'>
-              <label htmlFor='projectDays' className='label'>
-                Antall arbeidsdager for prosjektet
+              <label htmlFor='projectMonths' className='label'>
+                Antall måneder for engasjementet
               </label>
               <input
                 type='number'
-                id='projectDays'
+                id='projectMonths'
                 className='input'
-                value={projectDays}
+                value={projectMonths}
                 onChange={(e) => {
                   const value = e.target.value;
                   if (value === '' || /^[0-9\b]+$/.test(value)) {
-                    setProjectDays(value);
+                    setProjectMonths(value);
                   }
                 }}
                 min='1'
-                placeholder='Antall dager'
+                placeholder='Antall måneder'
               />
             </div>
           )}
@@ -186,9 +186,9 @@ export function DancerCalculator() {
                         </p>
                       </section>
                       <section className='result-section'>
-                        <h3 className='result-subtitle'>Dagsats:</h3>
+                        <h3 className='result-subtitle'>Månedssats:</h3>
                         <p className='result-value'>
-                          {Number(salary.dailyRate).toLocaleString('no-NO', {
+                          {Number(salary.monthlyRate).toLocaleString('no-NO', {
                             maximumFractionDigits: 0,
                           })}{' '}
                           NOK
@@ -200,12 +200,12 @@ export function DancerCalculator() {
                           ).toLocaleString('no-NO', {
                             maximumFractionDigits: 0,
                           })}{' '}
-                          NOK / 229 arbeidsdager)
+                          NOK / 12 måneder)
                         </p>
                       </section>
                       <section className='result-section'>
                         <h3 className='result-subtitle'>
-                          Lønn for prosjektet:
+                          Lønn for engasjementet:
                         </h3>
                         <p className='result-value'>
                           {Number(salary.projectSalary).toLocaleString('no-NO', {
@@ -214,11 +214,11 @@ export function DancerCalculator() {
                           NOK
                         </p>
                         <p className='result-explanation'>
-                          (Dagsats{' '}
-                          {Number(salary.dailyRate).toLocaleString('no-NO', {
+                          (Månedssats{' '}
+                          {Number(salary.monthlyRate).toLocaleString('no-NO', {
                             maximumFractionDigits: 0,
                           })}{' '}
-                          NOK x {projectDays} dager)
+                          NOK x {projectMonths} måneder)
                         </p>
                       </section>
                     </>
