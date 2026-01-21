@@ -4,7 +4,7 @@
 
 Lønnskalkulator for dansekunstnere i Norge. Beregn rettferdig lønn basert på gjeldende tariffavtaler og veiledende satser fra Norske Dansekunstnere.
 
-**[Live Demo →](https://noda-kalkulator.vercel.app)**
+**[Live Demo →](https://no-da-kalkulator.vercel.app)**
 
 ---
 
