@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { dancersSalaryData } from '@/lib/dancersSalary';
 import { choreographyProjectSalaryData } from '@/lib/choreographyProjectSalary';
+import { formatNumber, parseNorwegianNumber } from '@/lib/formatting';
 
 interface SalaryBreakdown {
   // Base rates
@@ -92,15 +93,15 @@ export function DancerChoreographerCalculator() {
     }
 
     // Base rates
-    const dancerYearlySalary = Number(
-      dancerData['Årslønn prosjekt'].replace(/\s/g, '')
+    const dancerYearlySalary = parseNorwegianNumber(
+      dancerData['Årslønn prosjekt']
     );
     const dancerMonthlyRate = dancerYearlySalary / 12;
-    const choreographerMonthlyRate = Number(
-      choreographerData['Innstudering månedssats'].replace(/\s/g, '')
+    const choreographerMonthlyRate = parseNorwegianNumber(
+      choreographerData['Innstudering månedssats']
     );
-    const choreographerMinuteRate = Number(
-      choreographerData['Minuttsats koreografi'].replace(/\s/g, '')
+    const choreographerMinuteRate = parseNorwegianNumber(
+      choreographerData['Minuttsats koreografi']
     );
 
     // Verkssats (always 100%, one-time fee)
@@ -173,9 +174,6 @@ export function DancerChoreographerCalculator() {
     productionPeriodMonths,
     performancePeriodMonths,
   ]);
-
-  const formatNumber = (num: number) =>
-    Math.round(num).toLocaleString('no-NO', { maximumFractionDigits: 0 });
 
   return (
     <form className='form calculator-content'>

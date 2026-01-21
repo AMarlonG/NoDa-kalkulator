@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { dancersSalaryData } from '@/lib/dancersSalary';
 import { calculateSelfEmployedRates } from '@/lib/selfEmployedRates';
+import { formatNumber, parseNorwegianNumber } from '@/lib/formatting';
 import { SelfEmployedPopover } from './SelfEmployedPopover';
 
 export function DancerCalculator() {
@@ -25,7 +26,7 @@ export function DancerCalculator() {
   // Calculate self-employed rates using shared utility
   const selfEmployedRates = useMemo(() => {
     if (!salary) return null;
-    const annualSalary = Number(salary.annualSalary.replace(/\s/g, ''));
+    const annualSalary = parseNorwegianNumber(salary.annualSalary);
     return calculateSelfEmployedRates(annualSalary);
   }, [salary]);
 
@@ -40,9 +41,7 @@ export function DancerCalculator() {
             annualSalary: selectedData['Årslønn fast ansettelse'],
           });
         } else if (employmentType === 'project' && projectMonths) {
-          const annualSalary = Number(
-            selectedData['Årslønn prosjekt'].replace(/\s/g, '')
-          );
+          const annualSalary = parseNorwegianNumber(selectedData['Årslønn prosjekt']);
           const monthlyRate = annualSalary / 12;
           const projectSalary = monthlyRate * Number(projectMonths);
 
@@ -155,12 +154,7 @@ export function DancerCalculator() {
                         Årslønn (fast ansettelse):
                       </h3>
                       <p className='result-value'>
-                        {Number(
-                          salary.annualSalary.replace(/\s/g, '')
-                        ).toLocaleString('no-NO', {
-                          maximumFractionDigits: 0,
-                        })}{' '}
-                        NOK
+                        {formatNumber(parseNorwegianNumber(salary.annualSalary))} NOK
                       </p>
                     </section>
                   ) : employmentType === 'project' && salary.projectSalary ? (
@@ -170,30 +164,16 @@ export function DancerCalculator() {
                           Årslønn (grunnlag for beregning):
                         </h3>
                         <p className='result-value'>
-                          {Number(
-                            salary.annualSalary.replace(/\s/g, '')
-                          ).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
+                          {formatNumber(parseNorwegianNumber(salary.annualSalary))} NOK
                         </p>
                       </section>
                       <section className='result-section'>
                         <h3 className='result-subtitle'>Månedssats:</h3>
                         <p className='result-value'>
-                          {Number(salary.monthlyRate).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
+                          {formatNumber(Number(salary.monthlyRate))} NOK
                         </p>
                         <p className='result-explanation'>
-                          (Årslønn{' '}
-                          {Number(
-                            salary.annualSalary.replace(/\s/g, '')
-                          ).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK / 12 måneder)
+                          (Årslønn {formatNumber(parseNorwegianNumber(salary.annualSalary))} NOK / 12 måneder)
                         </p>
                       </section>
                       <section className='result-section'>
@@ -201,17 +181,10 @@ export function DancerCalculator() {
                           Lønn for engasjementet:
                         </h3>
                         <p className='result-value'>
-                          {Number(salary.projectSalary).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
+                          {formatNumber(Number(salary.projectSalary))} NOK
                         </p>
                         <p className='result-explanation'>
-                          (Månedssats{' '}
-                          {Number(salary.monthlyRate).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK x {projectMonths} måneder)
+                          (Månedssats {formatNumber(Number(salary.monthlyRate))} NOK x {projectMonths} måneder)
                         </p>
                       </section>
                     </>

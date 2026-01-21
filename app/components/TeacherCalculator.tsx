@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { teacherSalaryData } from '@/lib/teacherSalary';
 import { calculateSelfEmployedRatesFromHourly } from '@/lib/selfEmployedRates';
+import { formatNumber } from '@/lib/formatting';
 import { SelfEmployedPopover } from './SelfEmployedPopover';
 
 export function TeacherCalculator() {
@@ -191,10 +192,7 @@ export function TeacherCalculator() {
               <section className='result-section'>
                 <h3 className='result-subtitle'>Timesats:</h3>
                 <p className='result-value'>
-                  {salary.hourlyRate.toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK
+                  {formatNumber(salary.hourlyRate)} NOK
                 </p>
                 <p className='result-explanation'>
                   Basert på {role} med {seniority} års ansiennitet
@@ -207,20 +205,10 @@ export function TeacherCalculator() {
               <section className='result-section'>
                 <h3 className='result-subtitle'>Lønn per uke:</h3>
                 <p className='result-value'>
-                  {Math.round(salary.weeklySalary).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK
+                  {formatNumber(salary.weeklySalary)} NOK
                 </p>
                 <p className='result-explanation'>
-                  {salary.hourlyRate.toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK × {weeklyHours} timer ={' '}
-                  {Math.round(salary.weeklySalary).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK
+                  {formatNumber(salary.hourlyRate)} NOK × {weeklyHours} timer = {formatNumber(salary.weeklySalary)} NOK
                 </p>
               </section>
 
@@ -230,20 +218,10 @@ export function TeacherCalculator() {
               <section className='result-section'>
                 <h3 className='result-subtitle'>Total lønn for perioden:</h3>
                 <p className='result-value'>
-                  {Math.round(salary.totalSalary).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK
+                  {formatNumber(salary.totalSalary)} NOK
                 </p>
                 <p className='result-explanation'>
-                  {Math.round(salary.weeklySalary).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK × {numberOfWeeks} uker ={' '}
-                  {Math.round(salary.totalSalary).toLocaleString('no-NO', {
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  NOK
+                  {formatNumber(salary.weeklySalary)} NOK × {numberOfWeeks} uker = {formatNumber(salary.totalSalary)} NOK
                 </p>
               </section>
 

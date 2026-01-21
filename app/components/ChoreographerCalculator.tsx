@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { choreographyProjectSalaryData } from '@/lib/choreographyProjectSalary';
 import { choreographyTheaterMusicalSalaryData } from '@/lib/choreographyTheaterMusicalSalary';
 import { calculateSelfEmployedRates } from '@/lib/selfEmployedRates';
+import { formatNumber, parseNorwegianNumber } from '@/lib/formatting';
 import { SelfEmployedPopover } from './SelfEmployedPopover';
 
 export function ChoreographerCalculator() {
@@ -39,13 +40,13 @@ export function ChoreographerCalculator() {
         (item) => item.Ansiennitet === Number(seniority)
       );
       if (selectedData) {
-        const monthlyRate = Number(
-          selectedData['Innstudering månedssats'].replace(/\s/g, '')
+        const monthlyRate = parseNorwegianNumber(
+          selectedData['Innstudering månedssats']
         );
         estimatedAnnualSalary = monthlyRate * 12;
       }
     } else if (workType === 'theater' && salary?.annualSalary) {
-      estimatedAnnualSalary = Number(salary.annualSalary.replace(/\s/g, ''));
+      estimatedAnnualSalary = parseNorwegianNumber(salary.annualSalary);
     }
 
     if (estimatedAnnualSalary === null) return null;
@@ -59,11 +60,11 @@ export function ChoreographerCalculator() {
           (item) => item.Ansiennitet === Number(seniority)
         );
         if (selectedData && productionLength && rehearsalMonths) {
-          const minuteRate = Number(
-            selectedData['Minuttsats koreografi'].replace(/\s/g, '')
+          const minuteRate = parseNorwegianNumber(
+            selectedData['Minuttsats koreografi']
           );
-          const monthlyRate = Number(
-            selectedData['Innstudering månedssats'].replace(/\s/g, '')
+          const monthlyRate = parseNorwegianNumber(
+            selectedData['Innstudering månedssats']
           );
           const productionSalary = minuteRate * Number(productionLength);
           const rehearsalSalary = monthlyRate * Number(rehearsalMonths);
@@ -72,13 +73,9 @@ export function ChoreographerCalculator() {
           setSalary({
             minuteRate: selectedData['Minuttsats koreografi'],
             monthlyRate: selectedData['Innstudering månedssats'],
-            productionSalary: productionSalary.toLocaleString('no-NO', {
-              maximumFractionDigits: 0,
-            }),
-            rehearsalSalary: rehearsalSalary.toLocaleString('no-NO', {
-              maximumFractionDigits: 0,
-            }),
-            totalSalary: Math.round(totalSalary).toString(),
+            productionSalary: formatNumber(productionSalary),
+            rehearsalSalary: formatNumber(rehearsalSalary),
+            totalSalary: formatNumber(totalSalary),
           });
         } else {
           setSalary(null);
@@ -238,10 +235,7 @@ export function ChoreographerCalculator() {
                           Total lønn for produksjonen:
                         </h3>
                         <p className='total-salary-value'>
-                          {Number(salary.totalSalary).toLocaleString('no-NO', {
-                            maximumFractionDigits: 0,
-                          })}{' '}
-                          NOK
+                          {salary.totalSalary} NOK
                         </p>
                         <p className='result-explanation'>
                           (Lønn for koreografi + Lønn for innstudering)
