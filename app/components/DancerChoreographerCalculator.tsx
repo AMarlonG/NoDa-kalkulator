@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react';
 import { dancersSalaryData } from '@/lib/dancersSalary';
 import { choreographyProjectSalaryData } from '@/lib/choreographyProjectSalary';
-import '../styles/base.css';
-import '../styles/calculator-common.css';
 
 interface SalaryBreakdown {
   // Base rates

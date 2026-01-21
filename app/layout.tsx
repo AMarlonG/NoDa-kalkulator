@@ -1,4 +1,5 @@
 import './styles/base.css';
+import './styles/calculator-common.css';
 import { Inter } from 'next/font/google';
 import type React from 'react';
 import { Analytics } from '@vercel/analytics/next';

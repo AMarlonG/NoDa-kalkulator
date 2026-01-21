@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react';
 import { choreographyProjectSalaryData } from '@/lib/choreographyProjectSalary';
 import { choreographyTheaterMusicalSalaryData } from '@/lib/choreographyTheaterMusicalSalary';
-import '../styles/base.css';
-import '../styles/calculator-common.css';
 
 export function ChoreographerCalculator() {
   const [seniority, setSeniority] = useState('');

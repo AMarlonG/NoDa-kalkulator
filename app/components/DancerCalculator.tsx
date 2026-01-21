@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { dancersSalaryData } from '@/lib/dancersSalary';
-import '../styles/base.css';
-import '../styles/calculator-common.css';
 
 export function DancerCalculator() {
   const [seniority, setSeniority] = useState('');

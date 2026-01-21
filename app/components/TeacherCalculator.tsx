@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { teacherSalaryData } from '@/lib/teacherSalary';
-import '../styles/base.css';
-import '../styles/calculator-common.css';
 
 export function TeacherCalculator() {
   const [role, setRole] = useState<
