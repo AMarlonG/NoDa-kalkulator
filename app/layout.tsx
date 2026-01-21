@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'NoDas lønnskalkulator for dansere',
-  description: 'Beregn din rettferdige lønn som danser',
+  description: 'Finn din lønn basert på gjeldende avtaler',
 };
 
 export default function RootLayout({

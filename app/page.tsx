@@ -74,7 +74,7 @@ export default function Home() {
           >
             NoDas lønnskalkulator
           </h1>
-          <p className='description'>Beregn din rettferdige lønn</p>
+          <p className='description'>Finn din lønn basert på gjeldende avtaler</p>
         </div>
         <div className='nav-container'>
           <div className='nav-row'>
