@@ -2,11 +2,11 @@ import './styles/base.css';
 import './styles/composition.css';
 import './styles/calculator-common.css';
 import './styles/page.css';
-import { Inter } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 import type React from 'react';
 import { Analytics } from '@vercel/analytics/next';
 
-const inter = Inter({ subsets: ['latin'] });
+const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export const metadata = {
   title: 'NoDas lønnskalkulator for dansere',
@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='no'>
-      <body className={inter.className}>
+      <body className={roboto.className}>
         {children}
         <Analytics />
       </body>
