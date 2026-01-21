@@ -2,10 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { teacherSalaryData } from '@/lib/teacherSalary';
-import {
-  classLengthCalculationData,
-  getMultiplierForClassLength,
-} from '@/lib/classLengthCalculation';
 import '../styles/base.css';
 import '../styles/calculator-common.css';
 
@@ -14,14 +10,12 @@ export function TeacherCalculator() {
     'Assistent' | 'Danselærer' | 'Dansepedagog' | ''
   >('');
   const [seniority, setSeniority] = useState('');
-  const [classCount, setClassCount] = useState<'single' | 'multiple' | ''>('');
-  const [classDuration, setClassDuration] = useState<number | ''>('');
-  const [numberOfClasses, setNumberOfClasses] = useState<string>('');
+  const [weeklyHours, setWeeklyHours] = useState<string>('');
+  const [numberOfWeeks, setNumberOfWeeks] = useState<string>('');
   const [salary, setSalary] = useState<{
-    hourlyRate: string;
-    classMultiplier: number;
-    baseSalaryPerClass: string;
-    totalBaseSalary: string;
+    hourlyRate: number;
+    weeklySalary: number;
+    totalSalary: number;
   } | null>(null);
 
   // Filter seniority options based on selected role
@@ -31,66 +25,40 @@ export function TeacherCalculator() {
         .map((item) => item.Ansiennitet)
     : [];
 
-  // Effect to handle single class selection (always 90 minutes)
-  useEffect(() => {
-    if (classCount === 'single') {
-      setClassDuration(90);
-      setNumberOfClasses('1');
-    } else if (classCount === 'multiple' && classDuration === '') {
-      // Reset class duration when switching to multiple classes
-      setClassDuration('');
-    }
-  }, [classCount]);
-
   // Calculate salary when inputs change
   useEffect(() => {
-    if (
-      role &&
-      seniority &&
-      classCount &&
-      classDuration &&
-      (classCount === 'single' ||
-        (classCount === 'multiple' && numberOfClasses))
-    ) {
+    if (role && seniority && weeklyHours && numberOfWeeks) {
       const selectedData = teacherSalaryData.find(
         (item) => item.Rolle === role && item.Ansiennitet === Number(seniority)
       );
 
       if (selectedData) {
         const hourlyRate = selectedData.Timelønn;
-        const multiplier = getMultiplierForClassLength(Number(classDuration));
-        const baseSalaryPerClass = hourlyRate * multiplier;
+        const hours = parseFloat(weeklyHours);
+        const weeks = parseFloat(numberOfWeeks);
+        const weeklySalary = hourlyRate * hours;
+        const totalSalary = weeklySalary * weeks;
 
-        // Calculate total base salary for all classes
-        const numClasses = Number(numberOfClasses) || 1;
-        const totalBaseSalary = baseSalaryPerClass * numClasses;
-
-        setSalary({
-          hourlyRate: hourlyRate.toString(),
-          classMultiplier: multiplier,
-          baseSalaryPerClass: Math.round(baseSalaryPerClass).toString(),
-          totalBaseSalary: Math.round(totalBaseSalary).toString(),
-        });
+        setSalary({ hourlyRate, weeklySalary, totalSalary });
       }
     } else {
       setSalary(null);
     }
-  }, [role, seniority, classCount, classDuration, numberOfClasses]);
+  }, [role, seniority, weeklyHours, numberOfWeeks]);
 
   // Add the resetForm function after the state declarations
   const resetForm = () => {
     setRole('');
     setSeniority('');
-    setClassCount('');
-    setClassDuration('');
-    setNumberOfClasses('');
+    setWeeklyHours('');
+    setNumberOfWeeks('');
     setSalary(null);
   };
 
   // Calculate self-employed rate based on hourly rate
   const getSelfEmployedRates = () => {
     if (!salary) return null;
-    const baseRate = Number(salary.hourlyRate);
+    const baseRate = salary.hourlyRate;
     const markup = baseRate * 0.368;
     const totalRate = baseRate + markup;
     return {
@@ -121,6 +89,14 @@ export function TeacherCalculator() {
             Har du relevant 4-årig BA inkludert pedagogikk, eller BA + 1 år PPU,
             starter du minimum på Dansepedagog, 2 år
           </li>
+        </ul>
+        <p className='calculator-intro-text'>
+          <strong>Slik beregner du ukentlige timer:</strong>
+        </p>
+        <ul className='calculator-intro-list'>
+          <li>Alle klasser under 60 minutter telles som 1 hel time</li>
+          <li>Underviser du kun 1 klokketime i uka, skriv inn 1,5 timer</li>
+          <li>For deltimer: 15 min = 0,25 / 30 min = 0,5 / 45 min = 0,75</li>
         </ul>
       </div>
 
@@ -175,88 +151,35 @@ export function TeacherCalculator() {
 
           {seniority && (
             <div className='input-group'>
-              <label htmlFor='classCount' className='label'>
-                Antall klasser
-              </label>
-              <div className='radio-group'>
-                <div className='radio-option'>
-                  <input
-                    type='radio'
-                    id='singleClass'
-                    name='classCount'
-                    value='single'
-                    checked={classCount === 'single'}
-                    onChange={() => setClassCount('single')}
-                  />
-                  <label htmlFor='singleClass'>
-                    Én klasse (beregnes alltid som 90 min)
-                  </label>
-                </div>
-                <div className='radio-option'>
-                  <input
-                    type='radio'
-                    id='multipleClasses'
-                    name='classCount'
-                    value='multiple'
-                    checked={classCount === 'multiple'}
-                    onChange={() => setClassCount('multiple')}
-                  />
-                  <label htmlFor='multipleClasses'>Flere klasser</label>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {classCount && (
-            <div className='input-group'>
-              <label htmlFor='classDuration' className='label'>
-                Undervisningstid
-              </label>
-              <select
-                id='classDuration'
-                className='styled-select'
-                value={classDuration}
-                onChange={(e) => setClassDuration(Number(e.target.value))}
-                disabled={classCount === 'single'}
-              >
-                <option value=''>Velg undervisningstid</option>
-                {classLengthCalculationData.map((item) => (
-                  <option
-                    key={item['Undervisningstid (min)']}
-                    value={item['Undervisningstid (min)']}
-                  >
-                    {item['Undervisningstid (min)']} minutter (
-                    {item['Undervisningstid (timer)']})
-                  </option>
-                ))}
-              </select>
-              {classCount === 'single' && (
-                <p className='result-explanation'>
-                  Én klasse beregnes alltid som 90 minutter uavhengig av faktisk
-                  varighet.
-                </p>
-              )}
-            </div>
-          )}
-
-          {classCount === 'multiple' && classDuration && (
-            <div className='input-group'>
-              <label htmlFor='numberOfClasses' className='label'>
-                Antall klasser
+              <label htmlFor='weeklyHours' className='label'>
+                Totalt antall klokketimer per uke
               </label>
               <input
                 type='number'
-                id='numberOfClasses'
+                id='weeklyHours'
                 className='input'
-                value={numberOfClasses}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === '' || /^[0-9\b]+$/.test(value)) {
-                    setNumberOfClasses(value);
-                  }
-                }}
+                value={weeklyHours}
+                onChange={(e) => setWeeklyHours(e.target.value)}
+                min='0.25'
+                step='0.25'
+                placeholder='F.eks. 1.5, 2.25, 3'
+              />
+            </div>
+          )}
+
+          {weeklyHours && (
+            <div className='input-group'>
+              <label htmlFor='numberOfWeeks' className='label'>
+                Antall uker i ansettelsen
+              </label>
+              <input
+                type='number'
+                id='numberOfWeeks'
+                className='input'
+                value={numberOfWeeks}
+                onChange={(e) => setNumberOfWeeks(e.target.value)}
                 min='1'
-                placeholder='Antall klasser'
+                placeholder='Antall uker'
               />
             </div>
           )}
@@ -271,11 +194,11 @@ export function TeacherCalculator() {
         <div className='card-content result-grid'>
           {salary ? (
             <div>
-              {/* 1. First show the calculations for the base hourly rate */}
+              {/* 1. Hourly rate */}
               <section className='result-section'>
                 <h3 className='result-subtitle'>Timesats:</h3>
                 <p className='result-value'>
-                  {Number(salary.hourlyRate).toLocaleString('no-NO', {
+                  {salary.hourlyRate.toLocaleString('no-NO', {
                     maximumFractionDigits: 0,
                   })}{' '}
                   NOK
@@ -283,45 +206,53 @@ export function TeacherCalculator() {
                 <p className='result-explanation'>
                   Basert på {role} med {seniority} års ansiennitet
                 </p>
-                <p className='result-explanation'>
-                  For {classDuration} minutter:{' '}
-                  {Number(salary.hourlyRate).toLocaleString('no-NO', {
+              </section>
+
+              <div className='separator'></div>
+
+              {/* 2. Weekly salary */}
+              <section className='result-section'>
+                <h3 className='result-subtitle'>Lønn per uke:</h3>
+                <p className='result-value'>
+                  {Math.round(salary.weeklySalary).toLocaleString('no-NO', {
                     maximumFractionDigits: 0,
                   })}{' '}
-                  NOK × {salary.classMultiplier} ={' '}
-                  {Number(salary.baseSalaryPerClass).toLocaleString('no-NO', {
+                  NOK
+                </p>
+                <p className='result-explanation'>
+                  {salary.hourlyRate.toLocaleString('no-NO', {
+                    maximumFractionDigits: 0,
+                  })}{' '}
+                  NOK × {weeklyHours} timer ={' '}
+                  {Math.round(salary.weeklySalary).toLocaleString('no-NO', {
                     maximumFractionDigits: 0,
                   })}{' '}
                   NOK
                 </p>
               </section>
 
-              {/* 2. Show total salary for multiple classes */}
-              {classCount === 'multiple' && (
-                <>
-                  <div className='separator'></div>
-                  <section className='result-section'>
-                    <h3 className='result-subtitle'>Total lønn:</h3>
-                    <p className='result-value'>
-                      {Number(salary.totalBaseSalary).toLocaleString('no-NO', {
-                        maximumFractionDigits: 0,
-                      })}{' '}
-                      NOK
-                    </p>
-                    <p className='result-explanation'>
-                      {Number(salary.baseSalaryPerClass).toLocaleString(
-                        'no-NO',
-                        { maximumFractionDigits: 0 }
-                      )}{' '}
-                      NOK × {numberOfClasses} klasser ={' '}
-                      {Number(salary.totalBaseSalary).toLocaleString('no-NO', {
-                        maximumFractionDigits: 0,
-                      })}{' '}
-                      NOK
-                    </p>
-                  </section>
-                </>
-              )}
+              <div className='separator'></div>
+
+              {/* 3. Total salary for period */}
+              <section className='result-section'>
+                <h3 className='result-subtitle'>Total lønn for perioden:</h3>
+                <p className='result-value'>
+                  {Math.round(salary.totalSalary).toLocaleString('no-NO', {
+                    maximumFractionDigits: 0,
+                  })}{' '}
+                  NOK
+                </p>
+                <p className='result-explanation'>
+                  {Math.round(salary.weeklySalary).toLocaleString('no-NO', {
+                    maximumFractionDigits: 0,
+                  })}{' '}
+                  NOK × {numberOfWeeks} uker ={' '}
+                  {Math.round(salary.totalSalary).toLocaleString('no-NO', {
+                    maximumFractionDigits: 0,
+                  })}{' '}
+                  NOK
+                </p>
+              </section>
 
               {/* Self-employed popover button */}
               <div className='popover-trigger-container'>
