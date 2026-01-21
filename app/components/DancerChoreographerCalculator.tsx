@@ -206,9 +206,11 @@ export function DancerChoreographerCalculator() {
             </select>
             {primaryRole && (
               <p className='result-explanation'>
-                {primaryRole === 'dancer'
-                  ? 'Som primær danser får du 100% danserlønn i begge perioder, og 50% koreograflønn i innstuderingsperioden.'
-                  : 'Som primær koreograf får du 100% koreograflønn i innstuderingsperioden, og 50% danserlønn i innstudering + 100% i forestillingsperioden.'}
+                {primaryRole === 'dancer' ? (
+                  <>Innstuderingsperiode: 100% danserlønn + 50% koreograflønn.<br />Forestillingsperiode: 100% danserlønn.</>
+                ) : (
+                  <>Innstuderingsperiode: 100% koreograflønn + 50% danserlønn.<br />Forestillingsperiode: 100% danserlønn.</>
+                )}
               </p>
             )}
           </div>
@@ -233,7 +235,7 @@ export function DancerChoreographerCalculator() {
                   value={dancerSeniority}
                   onChange={(e) => setDancerSeniority(e.target.value)}
                 >
-                  <option value=''>Velg ansiennitet</option>
+                  <option value=''>Velg ansiennitet som danser</option>
                   {dancersSalaryData.map((item) => (
                     <option key={item.Ansiennitet} value={item.Ansiennitet}>
                       {item.Ansiennitet}
@@ -252,7 +254,7 @@ export function DancerChoreographerCalculator() {
                   value={choreographerSeniority}
                   onChange={(e) => setChoreographerSeniority(e.target.value)}
                 >
-                  <option value=''>Velg ansiennitet</option>
+                  <option value=''>Velg ansiennitet som koreograf</option>
                   {choreographyProjectSalaryData.map((item) => (
                     <option key={item.Ansiennitet} value={item.Ansiennitet}>
                       {item.Ansiennitet}
@@ -271,7 +273,7 @@ export function DancerChoreographerCalculator() {
             <div className='card-content'>
               <div className='input-group'>
                 <label htmlFor='productionLengthMinutes' className='label'>
-                  Produksjonslengde (minutter)
+                  Lengde på verk (minutter)
                 </label>
                 <input
                   type='number'
@@ -299,10 +301,10 @@ export function DancerChoreographerCalculator() {
                   onChange={(e) => setProductionPeriodMonths(e.target.value)}
                   min='0.25'
                   step='0.25'
-                  placeholder='f.eks. 2 eller 1.5'
+                  placeholder='F.eks.: 0.5 for halv måned, 0.25 for kvart'
                 />
                 <p className='result-explanation'>
-                  Perioden hvor koreografi utvikles og øves inn (bruk 0.25 for kvart måned)
+                  Perioden hvor koreografi utvikles og øves inn (betalt som danser og koreograf)
                 </p>
               </div>
 
@@ -318,10 +320,10 @@ export function DancerChoreographerCalculator() {
                   onChange={(e) => setPerformancePeriodMonths(e.target.value)}
                   min='0.25'
                   step='0.25'
-                  placeholder='f.eks. 1 eller 0.5'
+                  placeholder='F.eks.: 0.5 for halv måned, 0.25 for kvart'
                 />
                 <p className='result-explanation'>
-                  Perioden med forestillinger (koreografarbeid avsluttes, kun danserarbeid)
+                  Perioden med forestillinger (kun betalt som danser)
                 </p>
               </div>
             </div>

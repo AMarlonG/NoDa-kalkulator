@@ -164,7 +164,7 @@ export function ChoreographerCalculator() {
             <>
               <div className='input-group'>
                 <label htmlFor='productionLength' className='label'>
-                  Produksjonslengde (minutter)
+                  Lengde på verk (minutter)
                 </label>
                 <input
                   type='number'
