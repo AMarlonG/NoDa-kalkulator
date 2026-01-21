@@ -9,7 +9,37 @@ NoDa-kalkulatoren er et verktøy som hjelper dansekunstnere å beregne rettferdi
 
 ## Teknisk Stack
 
-- **Frontend**: Next.js 15.2
-- **Språk**: TypeScript
-- **Styling**: Tailwind CSS
-- **Formhåndtering**: React Hook Form med Zod-validering
+- **Framework**: Next.js 16.1.4
+- **Språk**: TypeScript (strict mode)
+- **Styling**: Tailwind CSS 3.4
+- **Analytics**: Vercel Analytics
+
+## Utvikling
+
+### Forutsetninger
+
+- Node.js 20.9+ (påkrevd for Next.js 16)
+- npm eller yarn
+
+### Installasjon
+
+```bash
+npm install
+```
+
+### Utviklingsserver
+
+```bash
+npm run dev
+```
+
+Åpne [http://localhost:3000](http://localhost:3000) i nettleseren.
+
+### Andre kommandoer
+
+```bash
+npm run build       # Bygg for produksjon
+npm run lint        # Kjør ESLint
+npm run type-check  # Kjør TypeScript-sjekk
+npm run format      # Formater kode med Prettier
+```

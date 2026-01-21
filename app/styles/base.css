@@ -84,6 +84,8 @@ h6 {
   --primary: hsl(280, 60%, 30%);
   --ring: var(--primary);
 
+  --accent: hsl(280, 40%, 85%);
+
   --hover-primary: hsl(280, 65%, 25%);
   --hover-secondary: hsl(280, 35%, 75%);
 

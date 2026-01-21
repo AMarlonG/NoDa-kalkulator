@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { choreographyProjectSalaryData } from '@/lib/choreographyProjectSalary';
 import { choreographyTheaterMusicalSalaryData } from '@/lib/choreographyTheaterMusicalSalary';
+import { calculateSelfEmployedRates } from '@/lib/selfEmployedRates';
+import { SelfEmployedPopover } from './SelfEmployedPopover';
 
 export function ChoreographerCalculator() {
   const [seniority, setSeniority] = useState('');
@@ -26,11 +28,11 @@ export function ChoreographerCalculator() {
     setSalary(null);
   };
 
-  // Calculate self-employed rate based on salary data
-  const getSelfEmployedRates = () => {
+  // Calculate self-employed rates using shared utility
+  const selfEmployedRates = useMemo(() => {
     if (!seniority) return null;
 
-    let baseHourlyRate: number | null = null;
+    let estimatedAnnualSalary: number | null = null;
 
     if (workType === 'project') {
       const selectedData = choreographyProjectSalaryData.find(
@@ -40,24 +42,15 @@ export function ChoreographerCalculator() {
         const monthlyRate = Number(
           selectedData['Innstudering månedssats'].replace(/\s/g, '')
         );
-        const estimatedAnnualSalary = monthlyRate * 12;
-        baseHourlyRate = estimatedAnnualSalary / 1750;
+        estimatedAnnualSalary = monthlyRate * 12;
       }
     } else if (workType === 'theater' && salary?.annualSalary) {
-      const annualSalary = Number(salary.annualSalary.replace(/\s/g, ''));
-      baseHourlyRate = annualSalary / 1750;
+      estimatedAnnualSalary = Number(salary.annualSalary.replace(/\s/g, ''));
     }
 
-    if (baseHourlyRate === null) return null;
-
-    const markup = baseHourlyRate * 0.368;
-    const totalRate = baseHourlyRate + markup;
-    return {
-      baseRate: Math.round(baseHourlyRate),
-      markup: Math.round(markup),
-      totalRate: Math.round(totalRate),
-    };
-  };
+    if (estimatedAnnualSalary === null) return null;
+    return calculateSelfEmployedRates(estimatedAnnualSalary);
+  }, [seniority, workType, salary?.annualSalary]);
 
   useEffect(() => {
     if (seniority && workType) {
@@ -309,70 +302,7 @@ export function ChoreographerCalculator() {
         </button>
       </div>
 
-      {/* Self-employed popover */}
-      <div
-        id='selvstendig-info-choreographer'
-        popover='auto'
-        className='popover'
-      >
-        <div className='popover-content'>
-          <h3 className='popover-title'>
-            Er dette et oppdrag eller en ansettelse?
-          </h3>
-
-          <p className='popover-text'>
-            Jobb som danser, koreograf eller pedagog er i de fleste tilfeller å
-            anse som et arbeidsforhold i følge Arbeidsmiljøloven §1.8.
-          </p>
-
-          <p className='popover-text'>
-            Dersom arbeidet ikke treffer spesifiseringen i denne paragrafen kan
-            du ta jobben som et oppdrag. Vi anbefaler da at du legger på 36,8%
-            for å dekke dine kostnader med å drive eget firma og besørge egne
-            sosiale kostnader.
-          </p>
-
-          {getSelfEmployedRates() && (
-            <>
-              <h4 className='popover-subtitle'>
-                Din timesats som selvstendig næringsdrivende:
-              </h4>
-              <div className='popover-rate-breakdown'>
-                <div className='rate-row'>
-                  <span>Timesats (grunnlag):</span>
-                  <span>{getSelfEmployedRates()?.baseRate.toLocaleString('no-NO')} NOK</span>
-                </div>
-                <div className='rate-row'>
-                  <span>+ 36,8% påslag:</span>
-                  <span>{getSelfEmployedRates()?.markup.toLocaleString('no-NO')} NOK</span>
-                </div>
-                <div className='rate-row rate-total'>
-                  <span>Timesats med påslag:</span>
-                  <span>{getSelfEmployedRates()?.totalRate.toLocaleString('no-NO')} NOK</span>
-                </div>
-              </div>
-            </>
-          )}
-
-          <h4 className='popover-subtitle'>Påslaget dekker:</h4>
-          <ul className='popover-list'>
-            <li>15,8% - Arbeidsgiveravgift og tap av rettigheter</li>
-            <li>12,0% - Feriepenger</li>
-            <li>3,6% - Trygdeavgiftsforhøyelse</li>
-            <li>0,4% - Frivillig yrkesskadeforsikring</li>
-            <li>5,0% - Administrative kostnader</li>
-          </ul>
-
-          <button
-            type='button'
-            className='btn btn-primary popover-close'
-            popoverTarget='selvstendig-info-choreographer'
-            popoverTargetAction='hide'
-          >
-            Lukk
-          </button>
-        </div>
-      </div>
+      <SelfEmployedPopover id='selvstendig-info-choreographer' rates={selfEmployedRates} />
     </form>
   );
 }
