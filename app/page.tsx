@@ -5,7 +5,6 @@ import { DancerCalculator } from './components/DancerCalculator';
 import { ChoreographerCalculator } from './components/ChoreographerCalculator';
 import { DancerChoreographerCalculator } from './components/DancerChoreographerCalculator';
 import { TeacherCalculator } from './components/TeacherCalculator';
-import './styles/page.css';
 
 function isViewTransitionSupported() {
   return Boolean(document.startViewTransition);

@@ -1,0 +1,249 @@
+/* ==========================================================================
+   COMPOSITION LAYER - Layout Primitives (Andy Bell's CUBE CSS)
+   Reusable layout patterns that handle the "how things are laid out"
+   ========================================================================== */
+
+@layer composition {
+  /* ==========================================================================
+     STACK - Vertical flow with consistent spacing
+     Usage: <div class="stack"> for vertical rhythm
+     ========================================================================== */
+  .stack {
+    --_stack-space: var(--stack-space, var(--size-4));
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--_stack-space);
+  }
+
+  /* Stack with larger spacing */
+  .stack[data-space="lg"] {
+    --stack-space: var(--size-6);
+  }
+
+  .stack[data-space="xl"] {
+    --stack-space: var(--size-8);
+  }
+
+  /* ==========================================================================
+     CLUSTER - Horizontal wrapping group with alignment
+     Usage: <div class="cluster"> for button groups, tags, nav items
+     ========================================================================== */
+  .cluster {
+    --_cluster-space: var(--cluster-space, var(--size-2));
+    --_cluster-justify: var(--cluster-justify, flex-start);
+    --_cluster-align: var(--cluster-align, center);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_cluster-space);
+    justify-content: var(--_cluster-justify);
+    align-items: var(--_cluster-align);
+  }
+
+  .cluster[data-justify="center"] {
+    --cluster-justify: center;
+  }
+
+  .cluster[data-justify="between"] {
+    --cluster-justify: space-between;
+  }
+
+  /* ==========================================================================
+     CENTER - Horizontally center content with max-width
+     Usage: <div class="center"> for centered content blocks
+     ========================================================================== */
+  .center {
+    --_center-max: var(--center-max, 36rem);
+    --_center-gutter: var(--center-gutter, var(--size-4));
+
+    box-sizing: content-box;
+    max-width: var(--_center-max);
+    margin-inline: auto;
+    padding-inline: var(--_center-gutter);
+  }
+
+  .center[data-max="narrow"] {
+    --center-max: 28rem;
+  }
+
+  .center[data-max="wide"] {
+    --center-max: 48rem;
+  }
+
+  /* ==========================================================================
+     FLOW - Prose rhythm using lobotomized owl
+     Usage: <article class="flow"> for content with natural spacing
+     ========================================================================== */
+  .flow > * + * {
+    margin-block-start: var(--flow-space, 1em);
+  }
+
+  /* Heading spacing adjustments */
+  .flow > h2 + *,
+  .flow > h3 + *,
+  .flow > h4 + * {
+    --flow-space: var(--size-3);
+  }
+
+  .flow > * + h2 {
+    --flow-space: var(--size-8);
+  }
+
+  .flow > * + h3,
+  .flow > * + h4 {
+    --flow-space: var(--size-6);
+  }
+
+  /* ==========================================================================
+     SIDEBAR - Two-column layout with flexible sidebar
+     Usage: <div class="sidebar"> for main + sidebar layouts
+     ========================================================================== */
+  .sidebar {
+    --_sidebar-width: var(--sidebar-width, 20rem);
+    --_sidebar-gap: var(--sidebar-gap, var(--size-6));
+    --_sidebar-threshold: var(--sidebar-threshold, 50%);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_sidebar-gap);
+  }
+
+  .sidebar > :first-child {
+    flex-basis: var(--_sidebar-width);
+    flex-grow: 1;
+  }
+
+  .sidebar > :last-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-width: var(--_sidebar-threshold);
+  }
+
+  /* ==========================================================================
+     GRID - Auto-fill responsive grid
+     Usage: <div class="grid"> for card grids, galleries
+     ========================================================================== */
+  .grid {
+    --_grid-min: var(--grid-min, 16rem);
+    --_grid-gap: var(--grid-gap, var(--size-4));
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--_grid-min), 100%), 1fr));
+    gap: var(--_grid-gap);
+  }
+
+  /* ==========================================================================
+     SWITCHER - Horizontal to vertical based on threshold
+     Usage: <div class="switcher"> for responsive row/column layouts
+     ========================================================================== */
+  .switcher {
+    --_switcher-gap: var(--switcher-gap, var(--size-4));
+    --_switcher-threshold: var(--switcher-threshold, 30rem);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_switcher-gap);
+  }
+
+  .switcher > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--_switcher-threshold) - 100%) * 999);
+  }
+
+  /* ==========================================================================
+     COVER - Vertically center content with header/footer
+     Usage: <div class="cover"> for full-height hero sections
+     ========================================================================== */
+  .cover {
+    --_cover-padding: var(--cover-padding, var(--size-4));
+    --_cover-min-height: var(--cover-min-height, 100vh);
+
+    display: flex;
+    flex-direction: column;
+    min-height: var(--_cover-min-height);
+    padding: var(--_cover-padding);
+  }
+
+  .cover > * {
+    margin-block: var(--size-4);
+  }
+
+  .cover > :first-child:not(.cover-centered) {
+    margin-block-start: 0;
+  }
+
+  .cover > :last-child:not(.cover-centered) {
+    margin-block-end: 0;
+  }
+
+  .cover > .cover-centered {
+    margin-block: auto;
+  }
+
+  /* ==========================================================================
+     REGION - Section with consistent vertical padding
+     Usage: <section class="region"> for page sections
+     ========================================================================== */
+  .region {
+    --_region-space: var(--region-space, var(--size-8));
+
+    padding-block: var(--_region-space);
+  }
+
+  .region[data-space="lg"] {
+    --region-space: var(--size-12);
+  }
+
+  .region[data-space="xl"] {
+    --region-space: var(--size-16);
+  }
+
+  /* ==========================================================================
+     BOX - Generic box with padding
+     Usage: <div class="box"> for contained content
+     ========================================================================== */
+  .box {
+    --_box-padding: var(--box-padding, var(--size-4));
+    --_box-color: var(--box-color, inherit);
+    --_box-bg: var(--box-bg, transparent);
+
+    padding: var(--_box-padding);
+    color: var(--_box-color);
+    background-color: var(--_box-bg);
+  }
+
+  .box[data-padding="sm"] {
+    --box-padding: var(--size-2);
+  }
+
+  .box[data-padding="lg"] {
+    --box-padding: var(--size-6);
+  }
+
+  /* ==========================================================================
+     FRAME - Fixed aspect ratio container
+     Usage: <div class="frame"> for images, videos, embeds
+     ========================================================================== */
+  .frame {
+    --_frame-ratio: var(--frame-ratio, 16 / 9);
+
+    aspect-ratio: var(--_frame-ratio);
+    overflow: hidden;
+  }
+
+  .frame > img,
+  .frame > video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .frame[data-ratio="square"] {
+    --frame-ratio: 1;
+  }
+
+  .frame[data-ratio="portrait"] {
+    --frame-ratio: 3 / 4;
+  }
+}

@@ -1,150 +1,177 @@
-.main {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--spacing-16);
-}
+/* ==========================================================================
+   Page Layout Styles
+   Page-specific layout and navigation components
+   ========================================================================== */
 
-.header {
-  width: 100%;
-  max-width: 36rem;
-  margin-bottom: var(--spacing-12);
-}
-
-.title-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: var(--spacing-8);
-}
-
-.title {
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: var(--spacing-4);
-}
-
-.description {
-  font-size: clamp(1rem, 3vw, 1.25rem);
-  color: var(--muted-foreground);
-}
-
-/* New navigation container */
-.nav-container {
-  width: 100%;
-  max-width: 36rem;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.5rem, 2vw, 1rem);
-}
-
-/* Each row contains 2 buttons */
-.nav-row {
-  display: flex;
-  gap: clamp(0.5rem, 2vw, 1rem);
-  width: 100%;
-}
-
-/* Button styling */
-.nav-button {
-  flex: 1;
-  padding: clamp(0.5rem, 1.5vw, 0.75rem);
-  border-radius: var(--radius);
-  font-weight: 600;
-  transition: background-color 0.2s ease, border-color 0.2s ease,
-    color 0.2s ease;
-  cursor: pointer;
-  border: 2px solid var(--primary);
-  outline: none;
-  font-size: clamp(0.85rem, 1.5vw, 1rem);
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 3.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-button-active {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  border: none;
-}
-
-.nav-button-inactive {
-  background-color: var(--background);
-  color: var(--primary);
-}
-
-.nav-button-inactive:hover {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-}
-
-.nav-button:focus-visible {
-  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary);
-}
-
-.calculator-section {
-  width: 100%;
-  max-width: 36rem;
-  margin-top: var(--spacing-8);
-  view-transition-name: calculator;
-}
-
-.footer {
-  width: 100%;
-  max-width: 36rem;
-  margin-top: var(--spacing-16);
-  text-align: center;
-}
-
-.footer p {
-  color: var(--muted-foreground);
-  margin-bottom: var(--spacing-4);
-}
-
-.footer a {
-  color: var(--primary);
-  text-decoration: underline;
-  transition: all 0.2s ease;
-}
-
-.footer a:hover {
-  color: var(--primary);
-}
-
-@keyframes slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+@layer blocks {
+  /* ==========================================================================
+     Main Layout
+     ========================================================================== */
+  .main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--size-16);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  /* ==========================================================================
+     Header Section
+     ========================================================================== */
+  .header {
+    width: 100%;
+    max-width: 36rem;
+    margin-bottom: var(--size-12);
+  }
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: var(--size-8);
+  }
+
+  /* Override base title styles for page title */
+  .main .title {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--size-4);
+  }
+
+  /* Override base description styles for page description */
+  .main .description {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+  }
+
+  /* ==========================================================================
+     Navigation
+     ========================================================================== */
+  .nav-container {
+    width: 100%;
+    max-width: 36rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 2vw, 1rem);
+  }
+
+  .nav-row {
+    display: flex;
+    gap: clamp(0.5rem, 2vw, 1rem);
+    width: 100%;
+  }
+
+  .nav-button {
+    flex: 1;
+    padding: clamp(0.5rem, 1.5vw, 0.75rem);
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+    border: 2px solid var(--color-primary);
+    outline: none;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-button-active {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border: none;
+  }
+
+  .nav-button-inactive {
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+  }
+
+  .nav-button-inactive:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+  }
+
+  .nav-button:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary);
+  }
+
+  /* ==========================================================================
+     Calculator Section
+     ========================================================================== */
+  .calculator-section {
+    width: 100%;
+    max-width: 36rem;
+    margin-top: var(--size-8);
+    view-transition-name: calculator;
+  }
+
+  /* ==========================================================================
+     Footer
+     ========================================================================== */
+  .footer {
+    width: 100%;
+    max-width: 36rem;
+    margin-top: var(--size-16);
+    text-align: center;
+  }
+
+  .footer p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--size-4);
+  }
+
+  .footer a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    transition: all 0.2s ease;
+  }
+
+  .footer a:hover {
+    color: var(--color-primary);
   }
 }
 
-@keyframes slide-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-}
+/* ==========================================================================
+   Exceptions Layer - View Transitions & Animations
+   ========================================================================== */
 
-::view-transition-old(calculator) {
-  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-out;
-}
+@layer exceptions {
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-::view-transition-new(calculator) {
-  animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-in;
+  @keyframes slide-out {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+
+  ::view-transition-old(calculator) {
+    animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-out;
+  }
+
+  ::view-transition-new(calculator) {
+    animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-in;
+  }
 }
