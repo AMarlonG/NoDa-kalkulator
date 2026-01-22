@@ -67,8 +67,7 @@
 
   .calculator-intro-list {
     list-style-type: disc;
-    margin-left: var(--size-8);
-    margin-right: var(--size-8);
+    margin-inline: clamp(1rem, 4vw, 2rem);
     color: var(--color-text-muted);
     font-size: var(--text-sm);
   }

@@ -72,54 +72,50 @@ export default function Home() {
           <p className='description'>Finn din lønn basert på gjeldende avtaler</p>
         </div>
         <div className='nav-container'>
-          <div className='nav-row'>
-            <button
-              className={`nav-button ${
-                activeCalculator === 'dancer'
-                  ? 'nav-button-active'
-                  : 'nav-button-inactive'
-              }`}
-              onClick={() => updateActiveCalculatorWithTransition('dancer')}
-            >
-              Danser
-            </button>
-            <button
-              className={`nav-button ${
-                activeCalculator === 'choreographer'
-                  ? 'nav-button-active'
-                  : 'nav-button-inactive'
-              }`}
-              onClick={() =>
-                updateActiveCalculatorWithTransition('choreographer')
-              }
-            >
-              Koreograf
-            </button>
-          </div>
-          <div className='nav-row'>
-            <button
-              className={`nav-button ${
-                activeCalculator === 'dancerChoreographer'
-                  ? 'nav-button-active'
-                  : 'nav-button-inactive'
-              }`}
-              onClick={() =>
-                updateActiveCalculatorWithTransition('dancerChoreographer')
-              }
-            >
-              Danser & Koreograf
-            </button>
-            <button
-              className={`nav-button ${
-                activeCalculator === 'teacher'
-                  ? 'nav-button-active'
-                  : 'nav-button-inactive'
-              }`}
-              onClick={() => updateActiveCalculatorWithTransition('teacher')}
-            >
-              Pedagog
-            </button>
-          </div>
+          <button
+            className={`nav-button ${
+              activeCalculator === 'dancer'
+                ? 'nav-button-active'
+                : 'nav-button-inactive'
+            }`}
+            onClick={() => updateActiveCalculatorWithTransition('dancer')}
+          >
+            Danser
+          </button>
+          <button
+            className={`nav-button ${
+              activeCalculator === 'choreographer'
+                ? 'nav-button-active'
+                : 'nav-button-inactive'
+            }`}
+            onClick={() =>
+              updateActiveCalculatorWithTransition('choreographer')
+            }
+          >
+            Koreograf
+          </button>
+          <button
+            className={`nav-button ${
+              activeCalculator === 'dancerChoreographer'
+                ? 'nav-button-active'
+                : 'nav-button-inactive'
+            }`}
+            onClick={() =>
+              updateActiveCalculatorWithTransition('dancerChoreographer')
+            }
+          >
+            Danser & Koreograf
+          </button>
+          <button
+            className={`nav-button ${
+              activeCalculator === 'teacher'
+                ? 'nav-button-active'
+                : 'nav-button-inactive'
+            }`}
+            onClick={() => updateActiveCalculatorWithTransition('teacher')}
+          >
+            Pedagog
+          </button>
         </div>
       </header>
 

@@ -12,7 +12,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--size-16);
+    padding: clamp(1rem, 4vw, 4rem);
   }
 
   /* ==========================================================================
@@ -54,15 +54,9 @@
   .nav-container {
     width: 100%;
     max-width: 36rem;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
     gap: clamp(0.75rem, 2vw, 1.25rem);
-  }
-
-  .nav-row {
-    display: flex;
-    gap: clamp(0.75rem, 2vw, 1.25rem);
-    width: 100%;
   }
 
   .nav-button {
