@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { choreographyProjectSalaryData } from '@/lib/choreographyProjectSalary';
 import { choreographyTheaterMusicalSalaryData } from '@/lib/choreographyTheaterMusicalSalary';
-import { calculateSelfEmployedRates } from '@/lib/selfEmployedRates';
+import { calculateSelfEmployedRates, calculateSelfEmployedRatesFromHourly } from '@/lib/selfEmployedRates';
 import { formatNumber, parseNorwegianNumber } from '@/lib/formatting';
 import { SelfEmployedPopover } from './SelfEmployedPopover';
 
@@ -12,6 +12,7 @@ export function ChoreographerCalculator() {
   const [workType, setWorkType] = useState<'project' | 'theater' | ''>('');
   const [productionLength, setProductionLength] = useState('');
   const [rehearsalMonths, setRehearsalMonths] = useState('');
+  const [rehearsalDays, setRehearsalDays] = useState('');
   const [salary, setSalary] = useState<{
     minuteRate?: string;
     monthlyRate?: string;
@@ -19,6 +20,10 @@ export function ChoreographerCalculator() {
     productionSalary?: string;
     rehearsalSalary?: string;
     totalSalary?: string;
+    dailyRate?: number;
+    totalFee?: number;
+    normalhonorar?: number;
+    usedHighestSeniority?: boolean;
   } | null>(null);
 
   const resetForm = () => {
@@ -26,6 +31,7 @@ export function ChoreographerCalculator() {
     setWorkType('');
     setProductionLength('');
     setRehearsalMonths('');
+    setRehearsalDays('');
     setSalary(null);
   };
 
@@ -45,13 +51,13 @@ export function ChoreographerCalculator() {
         );
         estimatedAnnualSalary = monthlyRate * 12;
       }
-    } else if (workType === 'theater' && salary?.annualSalary) {
-      estimatedAnnualSalary = parseNorwegianNumber(salary.annualSalary);
+    } else if (workType === 'theater' && salary?.dailyRate) {
+      return calculateSelfEmployedRatesFromHourly(salary.dailyRate);
     }
 
     if (estimatedAnnualSalary === null) return null;
     return calculateSelfEmployedRates(estimatedAnnualSalary);
-  }, [seniority, workType, salary?.annualSalary]);
+  }, [seniority, workType, salary?.normalhonorar, salary?.dailyRate]);
 
   useEffect(() => {
     if (seniority && workType) {
@@ -81,13 +87,26 @@ export function ChoreographerCalculator() {
           setSalary(null);
         }
       } else if (workType === 'theater') {
-        const selectedData = choreographyTheaterMusicalSalaryData.find(
-          (item) => item.Ansiennitet === Number(seniority)
-        );
-        if (selectedData) {
-          setSalary({
-            annualSalary: selectedData.Lønn,
-          });
+        const days = Number(rehearsalDays);
+        if (rehearsalDays && days >= 1 && days <= 48) {
+          const usedHighestSeniority = days <= 15;
+          const lookupSeniority = usedHighestSeniority ? 14 : Number(seniority);
+          const selectedData = choreographyTheaterMusicalSalaryData.find(
+            (item) => item.Ansiennitet === lookupSeniority
+          );
+          if (selectedData) {
+            const normalhonorar = parseNorwegianNumber(selectedData.Lønn);
+            const dailyRate = normalhonorar / 48;
+            const totalFee = dailyRate * days;
+            setSalary({
+              dailyRate,
+              totalFee,
+              normalhonorar,
+              usedHighestSeniority,
+            });
+          } else {
+            setSalary(null);
+          }
         } else {
           setSalary(null);
         }
@@ -97,7 +116,7 @@ export function ChoreographerCalculator() {
     } else {
       setSalary(null);
     }
-  }, [seniority, workType, productionLength, rehearsalMonths]);
+  }, [seniority, workType, productionLength, rehearsalMonths, rehearsalDays]);
 
   return (
     <form className='form calculator-content'>
@@ -140,6 +159,7 @@ export function ChoreographerCalculator() {
                 setWorkType(e.target.value as 'project' | 'theater');
                 setProductionLength('');
                 setRehearsalMonths('');
+                setRehearsalDays('');
               }}
             >
               <option value=''>Velg arbeidstype</option>
@@ -147,6 +167,32 @@ export function ChoreographerCalculator() {
               <option value='theater'>For teater eller musikal</option>
             </select>
           </div>
+
+          {workType === 'theater' && (
+            <div className='input-group'>
+              <label htmlFor='rehearsalDays' className='label'>
+                Antall prøvedager
+              </label>
+              <input
+                type='number'
+                id='rehearsalDays'
+                className='input'
+                value={rehearsalDays}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === '' || /^[0-9\b]+$/.test(value)) {
+                    const num = Number(value);
+                    if (value === '' || (num >= 0 && num <= 48)) {
+                      setRehearsalDays(value);
+                    }
+                  }
+                }}
+                min='1'
+                max='48'
+                placeholder='1–48 dager'
+              />
+            </div>
+          )}
 
           {workType === 'project' && (
             <>
@@ -246,11 +292,46 @@ export function ChoreographerCalculator() {
                     </p>
                   )}
                 </>
-              ) : workType === 'theater' && salary.annualSalary ? (
-                <section className='result-section'>
-                  <h3 className='result-subtitle'>Produksjonslønn:</h3>
-                  <p className='total-salary-value'>{salary.annualSalary} NOK</p>
-                </section>
+              ) : workType === 'theater' && salary.totalFee != null ? (
+                <>
+                  <section className='result-section'>
+                    <h3 className='result-subtitle'>Normalhonorar (48 dager):</h3>
+                    <p className='result-value'>
+                      {formatNumber(salary.normalhonorar!)} NOK
+                    </p>
+                    {salary.usedHighestSeniority && (
+                      <p className='result-breakdown'>
+                        Høyeste ansiennitet (14 år) brukt jf. punkt 7.4
+                      </p>
+                    )}
+                  </section>
+                  <section className='result-section'>
+                    <h3 className='result-subtitle'>Dagsats:</h3>
+                    <p className='result-value'>
+                      {formatNumber(Math.round(salary.dailyRate! * 100) / 100)} NOK
+                    </p>
+                    <p className='result-breakdown'>
+                      {formatNumber(salary.normalhonorar!)} ÷ 48 dager
+                    </p>
+                  </section>
+                  <section className='result-section'>
+                    <h3 className='result-subtitle'>Total honorar:</h3>
+                    <p className='total-salary-value'>
+                      {formatNumber(Math.round(salary.totalFee!))} NOK
+                    </p>
+                    <p className='result-breakdown'>
+                      {formatNumber(Math.round(salary.dailyRate! * 100) / 100)} NOK/dag × {rehearsalDays} dager
+                    </p>
+                  </section>
+                  {salary.usedHighestSeniority && (
+                    <section className='result-section'>
+                      <h3 className='result-subtitle'>Merk:</h3>
+                      <p className='result-explanation'>
+                        Ved 1–15 prøvedager benyttes alltid høyeste ansiennitet (14 år) for beregning av dagsats, uavhengig av koreografens faktiske ansiennitet (jf. Koreografavtalen punkt 7.4).
+                      </p>
+                    </section>
+                  )}
+                </>
               ) : (
                 <p className='result-explanation'>
                   Vennligst fyll ut alle feltene for å se beregnet lønn.
@@ -286,7 +367,12 @@ export function ChoreographerCalculator() {
         </button>
       </div>
 
-      <SelfEmployedPopover id='selvstendig-info-choreographer' rates={selfEmployedRates} />
+      <SelfEmployedPopover
+        id='selvstendig-info-choreographer'
+        rates={selfEmployedRates}
+        rateLabel={workType === 'theater' ? 'Dagsats' : undefined}
+        rateNote={workType === 'theater' ? 'jf. punkt 7.4 i koreografavtalen' : undefined}
+      />
     </form>
   );
 }

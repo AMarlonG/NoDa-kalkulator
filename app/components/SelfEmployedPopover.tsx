@@ -5,9 +5,11 @@ import { SelfEmployedRates } from '@/lib/selfEmployedRates';
 interface SelfEmployedPopoverProps {
   id: string;
   rates: SelfEmployedRates | null;
+  rateLabel?: string;
+  rateNote?: string;
 }
 
-export function SelfEmployedPopover({ id, rates }: SelfEmployedPopoverProps) {
+export function SelfEmployedPopover({ id, rates, rateLabel = 'Timesats', rateNote }: SelfEmployedPopoverProps) {
   return (
     <div id={id} popover='auto' className='popover'>
       <div className='popover-content'>
@@ -30,11 +32,11 @@ export function SelfEmployedPopover({ id, rates }: SelfEmployedPopoverProps) {
         {rates && (
           <>
             <h4 className='popover-subtitle'>
-              Din timesats som selvstendig næringsdrivende:
+              Din {rateLabel.toLowerCase()} som selvstendig næringsdrivende{rateNote ? ` (${rateNote})` : ''}:
             </h4>
             <div className='popover-rate-breakdown'>
               <div className='rate-row'>
-                <span>Timesats (grunnlag):</span>
+                <span>{rateLabel} (grunnlag):</span>
                 <span>{rates.baseRate.toLocaleString('no-NO')} NOK</span>
               </div>
               <div className='rate-row'>
@@ -42,7 +44,7 @@ export function SelfEmployedPopover({ id, rates }: SelfEmployedPopoverProps) {
                 <span>{rates.markup.toLocaleString('no-NO')} NOK</span>
               </div>
               <div className='rate-row rate-total'>
-                <span>Timesats med påslag:</span>
+                <span>{rateLabel} med påslag:</span>
                 <span>{rates.totalRate.toLocaleString('no-NO')} NOK</span>
               </div>
             </div>
