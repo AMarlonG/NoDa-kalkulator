@@ -69,7 +69,7 @@ export default function Home() {
           <h1 className='title'>
             NoDas lønnskalkulator
           </h1>
-          <p className='description'>Finn din lønn basert på gjeldende avtaler</p>
+          <p className='description'>Velg relevant kalkulator og finn din lønn basert på gjeldende avtaler.</p>
         </div>
         <div className='nav-container'>
           <button

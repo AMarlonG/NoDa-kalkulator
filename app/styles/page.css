@@ -46,6 +46,7 @@
     font-size: var(--text-lg);
     color: var(--color-text-muted);
     margin-bottom: 0;
+    text-wrap: balance;
   }
 
   /* ==========================================================================

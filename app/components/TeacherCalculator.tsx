@@ -71,27 +71,69 @@ export function TeacherCalculator() {
         <p className='calculator-intro-text'>
           Møter og forestillinger er ikke inkludert i denne utregningen. Les arbeidsavtalen din om hvordan arbeid utover selve undervisningen lønnes.
         </p>
-        <ul className='calculator-intro-list'>
-          <li>
-            Har du relevant Bachelor (BA) starter du minimum på Danselærer, 2 år
-          </li>
-          <li>
-            Har du relevant 3-årig BA med pedagogikk starter du minimum på
-            Dansepedagog, 0 år
-          </li>
-          <li>
-            Har du relevant 4-årig BA inkludert pedagogikk, eller BA + 1 år PPU,
-            starter du minimum på Dansepedagog, 2 år
-          </li>
-        </ul>
-        <p className='calculator-intro-text'>
-          <strong>Slik beregner du ukentlige timer:</strong>
-        </p>
-        <ul className='calculator-intro-list'>
-          <li>Alle klasser under 60 minutter telles som 1 hel time</li>
-          <li>Underviser du kun 1 klokketime i uka, skriv inn 1,5 timer</li>
-          <li>For deltimer: 15 min = 0,25 / 30 min = 0,5 / 45 min = 0,75</li>
-        </ul>
+        <details className='calculator-intro-disclosure'>
+          <summary className='calculator-intro-summary'>
+            Finn din ansiennitet og lønnsplassering
+          </summary>
+          <div className='calculator-intro-panel'>
+            <p className='calculator-intro-text'>
+              Ved innplassering beregnes ansiennitet ut fra tidligere
+              arbeidserfaring i pedagogisk, skapende og utøvende arbeid.
+            </p>
+            <ul className='calculator-intro-list'>
+              <li>
+                Ved fullført godkjent høyere utdannelse (BA eller tilsvarende)
+                innplasseres du minimum som Danselærer med 2 års ansiennitet.
+              </li>
+              <li>
+                Har du relevant 3-årig BA med pedagogikk, innplasseres du
+                minimum som Dansepedagog med 0 års ansiennitet.
+              </li>
+              <li>
+                Har du relevant 4-årig BA inkludert pedagogikk, eller BA + 1 år
+                PPU, innplasseres du minimum som Dansepedagog med 2 års
+                ansiennitet.
+              </li>
+              <li>
+                Ved mastergrad eller PhD gis ytterligere 2 års ansiennitet per
+                grad.
+              </li>
+            </ul>
+            <p className='calculator-intro-text'>
+              Pedagogisk erfaring beregnes slik: Minimum 8 klasser à 60
+              minutter i 28 uker per år gir 1 års ansiennitet.
+            </p>
+            <p className='calculator-intro-text'>
+              Annen erfaring som danser eller koreograf i profesjonell
+              sammenheng skal tillegges betydelig vekt, men samlet
+              ansiennitet kan ikke økes med mer enn ett år for ett år.
+            </p>
+            <p className='calculator-intro-text'>
+              For mer informasjon, se{' '}
+              <a
+                className='calculator-intro-link'
+                href='https://norskedansekunstnere.no/lonn-og-arbeidsliv/for-pedagoger'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                Norske Dansekunstneres side for pedagoger
+              </a>
+              .
+            </p>
+          </div>
+        </details>
+        <details className='calculator-intro-disclosure'>
+          <summary className='calculator-intro-summary'>
+            Slik beregner du ukentlige timer
+          </summary>
+          <div className='calculator-intro-panel'>
+            <ul className='calculator-intro-list'>
+              <li>Alle klasser under 60 minutter telles som 1 hel time</li>
+              <li>Underviser du kun 1 klokketime i uka, skriv inn 1,5 timer</li>
+              <li>For deltimer: 15 min = 0,25 / 30 min = 0,5 / 45 min = 0,75</li>
+            </ul>
+          </div>
+        </details>
       </div>
 
       <div className='card'>

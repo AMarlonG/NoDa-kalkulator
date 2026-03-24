@@ -5,6 +5,14 @@ import { dancersSalaryData } from '@/lib/dancersSalary';
 import { choreographyProjectSalaryData } from '@/lib/choreographyProjectSalary';
 import { formatNumber, parseNorwegianNumber } from '@/lib/formatting';
 
+function isPositiveNumber(value: number): boolean {
+  return Number.isFinite(value) && value > 0;
+}
+
+function isPositiveQuarterStep(value: number): boolean {
+  return isPositiveNumber(value) && Math.round(value * 4) === value * 4;
+}
+
 interface SalaryBreakdown {
   // Base rates
   dancerMonthlyRate: number;
@@ -87,6 +95,19 @@ export function DancerChoreographerCalculator() {
       (item) => item.Ansiennitet === Number(choreographerSeniority)
     );
 
+    const productionLength = Number(productionLengthMinutes);
+    const prodMonths = Number(productionPeriodMonths);
+    const perfMonths = Number(performancePeriodMonths);
+
+    if (
+      !isPositiveNumber(productionLength) ||
+      !isPositiveQuarterStep(prodMonths) ||
+      !isPositiveQuarterStep(perfMonths)
+    ) {
+      setSalary(null);
+      return;
+    }
+
     if (!dancerData || !choreographerData) {
       setSalary(null);
       return;
@@ -105,11 +126,7 @@ export function DancerChoreographerCalculator() {
     );
 
     // Verkssats (always 100%, one-time fee)
-    const verkssats = choreographerMinuteRate * Number(productionLengthMinutes);
-
-    // Parse months
-    const prodMonths = parseFloat(productionPeriodMonths);
-    const perfMonths = parseFloat(performancePeriodMonths);
+    const verkssats = choreographerMinuteRate * productionLength;
 
     let prodDancer: number;
     let prodChoreographer: number;

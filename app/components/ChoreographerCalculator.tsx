@@ -7,6 +7,11 @@ import { calculateSelfEmployedRates, calculateSelfEmployedRatesFromHourly } from
 import { formatNumber, parseNorwegianNumber } from '@/lib/formatting';
 import { SelfEmployedPopover } from './SelfEmployedPopover';
 
+const decimalRateFormatter = new Intl.NumberFormat('no-NO', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 export function ChoreographerCalculator() {
   const [seniority, setSeniority] = useState('');
   const [workType, setWorkType] = useState<'project' | 'theater' | ''>('');
@@ -57,7 +62,11 @@ export function ChoreographerCalculator() {
 
     if (estimatedAnnualSalary === null) return null;
     return calculateSelfEmployedRates(estimatedAnnualSalary);
-  }, [seniority, workType, salary?.normalhonorar, salary?.dailyRate]);
+  }, [seniority, workType, salary?.dailyRate]);
+
+  const hasCalculatedResult =
+    (workType === 'project' && Boolean(salary?.totalSalary)) ||
+    (workType === 'theater' && salary?.totalFee != null);
 
   useEffect(() => {
     if (seniority && workType) {
@@ -151,6 +160,9 @@ export function ChoreographerCalculator() {
             <label htmlFor='workType' className='label'>
               Arbeidstype
             </label>
+            <p className='input-helper-text'>
+              Velg det som passer best for oppdraget ditt.
+            </p>
             <select
               id='workType'
               className='styled-select'
@@ -308,7 +320,7 @@ export function ChoreographerCalculator() {
                   <section className='result-section'>
                     <h3 className='result-subtitle'>Dagsats:</h3>
                     <p className='result-value'>
-                      {formatNumber(Math.round(salary.dailyRate! * 100) / 100)} NOK
+                      {decimalRateFormatter.format(salary.dailyRate!)} NOK
                     </p>
                     <p className='result-breakdown'>
                       {formatNumber(salary.normalhonorar!)} ÷ 48 dager
@@ -320,7 +332,7 @@ export function ChoreographerCalculator() {
                       {formatNumber(Math.round(salary.totalFee!))} NOK
                     </p>
                     <p className='result-breakdown'>
-                      {formatNumber(Math.round(salary.dailyRate! * 100) / 100)} NOK/dag × {rehearsalDays} dager
+                      {decimalRateFormatter.format(salary.dailyRate!)} NOK/dag × {rehearsalDays} dager
                     </p>
                   </section>
                   {salary.usedHighestSeniority && (
@@ -336,6 +348,28 @@ export function ChoreographerCalculator() {
                 <p className='result-explanation'>
                   Vennligst fyll ut alle feltene for å se beregnet lønn.
                 </p>
+              )}
+
+              {hasCalculatedResult && (
+                <section className='result-section'>
+                  <h3 className='result-subtitle'>Om satsene</h3>
+                  <p className='result-explanation'>
+                    Dette er det du skal ha i henhold til koreografavtalen.
+                    Satsene er bindende for teatre som er motpart i avtalen med
+                    oss. For arbeidsplasser som ikke er bundet av en
+                    tariffavtale med oss, er dette en veiledende sats som vi
+                    anbefaler at man strekker seg etter.
+                  </p>
+                  <p className='result-breakdown'>
+                    <a
+                      href='https://norskedansekunstnere.no/lonn-og-arbeidsliv/for-koreografer'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      Les mer om koreografavtalen her.
+                    </a>
+                  </p>
+                </section>
               )}
 
               {/* Self-employed popover button */}

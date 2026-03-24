@@ -419,6 +419,13 @@
     transition: color 0.15s ease;
   }
 
+  .input-helper-text {
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    margin-top: calc(var(--size-2) * -1);
+  }
+
   /* Focus-within for input groups */
   .input-group:focus-within .label {
     color: var(--color-primary);
